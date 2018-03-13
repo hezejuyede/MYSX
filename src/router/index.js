@@ -9,8 +9,10 @@ import Register from '../components/register/register.vue'
 import ShoppingCart from '../components/shoppingCart/shoppingCart.vue'
 import UserInfo from '../components/userInfo/userInfo.vue'
 import Nearby from '../components/nearby/nearby.vue'
+import Search from '../components/search/search.vue'
 
-Vue.use(Router)
+
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -50,7 +52,7 @@ export default new Router({
       component: Details
     },
     {
-      path: '/GoodsDetails',
+      path: '/GoodsDetails/',
       name: 'GoodsDetails',
       component: GoodsDetails
     },
@@ -58,6 +60,11 @@ export default new Router({
       path: '/Nearby',
       name: 'Nearby',
       component: Nearby
+    },
+    {
+      path: '/Search',
+      name: 'Search',
+      component: Search
     }
   ]
 })
