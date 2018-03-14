@@ -14,17 +14,16 @@
             <p class="right-top-title">{{item.title}}</p>
           </div>
           <div class="right-center">
-            <span class="right-center-price">总价：￥{{item.goodsPrice}}</span>
-            <span class="right-center-Specifications">规格：{{item.size}}</span>
+            <span class="right-center-price">价格：￥{{goodsPrice}}</span>
           </div>
           <div class="right-bottom">
             <div class="right-bottom-addMinus">
               <span class="add" @click="minusGoods(index)">-</span>
-              <span class="number" ref="numberGoods">{{item.number}}</span>
+              <span class="number" ref="numberGoods">{{item.num}}</span>
               <span class="Minus" @click="addGoods(index)">+</span>
             </div>
             <div>
-              <span class="follow" @click="followGoods">关注</span>
+              <span class="follow" @click="followGoods(index)">关注</span>
               <span class="delete" @click="deleteGoods(index)">删除</span>
             </div>
           </div>
@@ -38,30 +37,48 @@
       </div>
       <div class="cart-footer-center">
         <span>一共</span>
-        <span ref="zg">{{allGoodsNumber}}</span>
+        <span ref="zg">{{allGoodsNumber}}件</span>
         <span>总价</span>
-        <span ref="zj">{{allGoodsPrice}}</span>
+        <span ref="zj">{{allGoodsPrice}}元</span>
       </div>
       <div class="cart-footer-right">
-        <span class="">结算</span>
+        <span class="" @click="gotoJS">结算</span>
       </div>
     </section>
+    <confirm
+      @hideConfirm="hideConfirm"
+      @ConfirmEvent="confirmEvent"
+      :confirmMessage="confirmMessage"
+      :showHideConfirm="showHideConfirm"></confirm>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import SearchNavbar from "../../bese/searchNavbar/seachNavbar.vue";
+  import Confirm from '../../bese/confirm/confirm.vue'
   import axios from 'axios';
+  import {addCart,getUserShoppingCart} from '../../api/config'
 
   export default {
-    components: {SearchNavbar},
+    components: {
+      SearchNavbar,
+      Confirm
+    },
     name: 'shoppingCart',
     data() {
       return {
+        showHideConfirm: true,
+        confirmMessage: '确认删除',
+        index:'',
+        confirm:false,
         goodsCart: [],
+        goodsPrice: 0,
         allGoodsPrice: 0,
         allGoodsNumber: 0
       }
+
+    },
+    mounted() {
 
     },
     created(){
@@ -70,17 +87,201 @@
 
     },
     methods: {
+      //获得购物车数据
       _getGoodsCart() {
-        axios.get('/api/shoppingCart')
-          .then((res) => {
-            this.goodsCart = res.data;
+        if (sessionStorage.getItem("userInfo") === null) {
+          let shoppingCart = localStorage.getItem("ShoppingCart");
+          shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+          this.goodsCart = shoppingCart.productlist;
+          this.goodsPrice = this.goodsCart[0].num * this.goodsCart[0].price;
+          this.allGoodsPrice = shoppingCart.totalAmount;
+          this.allGoodsNumber = shoppingCart.totalNumber;
+        }
+        else {
+          let shoppingCart = localStorage.getItem("ShoppingCart");
+          shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+          axios.post('/api/shoppingCart', {
+            shoppingCart: shoppingCart
           })
-          .catch((err) => {
-            console.log(err)
-          })
+            .then((res) => {
+              this.goodsCart = res.data.productlist;
+              this.goodsPrice = this.goodsCart[0].num * this.goodsCart[0].price;
+              this.allGoodsPrice = res.data.totalAmount;
+              this.allGoodsNumber = res.data.totalNumber
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      },
+
+      //点击取消是隐藏模态框
+      hideConfirm(ev) {
+        this.showHideConfirm = ev
+      },
+      //点击确认后进行删除
+      confirmEvent(ev) {
+        this.confirm = ev;
+        this.showHideConfirm = ev;
+        let index = this.index;
+        if (this.confirm === true) {
+          if (sessionStorage.getItem("userInfo") === null) {
+            this.goodsCart.splice(index, 1);
+            let id = this.goodsCart[index].id;
+            let ShoppingCart = localStorage.getItem("ShoppingCart");
+            let jsonstr = JSON.parse(ShoppingCart.substr(1, ShoppingCart.length));
+            let productlist = jsonstr.productlist;
+            let list = [];
+            for (let i in productlist) {
+              if (productlist[i].id == id) {
+                jsonstr.totalNumber = parseInt(jsonstr.totalNumber) - parseInt(productlist[i].num);
+                jsonstr.totalAmount = parseFloat(jsonstr.totalAmount) - parseInt(productlist[i].num) * parseFloat(productlist[i].price);
+              }
+              else {
+                list.push(productlist[i]);
+              }
+            }
+            jsonstr.productlist = list;
+            localStorage.setItem("ShoppingCart", "'" + JSON.stringify(jsonstr));
+            let shoppingCart = localStorage.getItem("ShoppingCart");
+            shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+            this.allGoodsPrice = shoppingCart.totalAmount;
+            this.allGoodsNumber = shoppingCart.totalNumber;
+
+          }
+          else {
+            this.goodsCart.splice(index, 1);
+            let id = this.goodsCart[index].id;
+            let ShoppingCart = localStorage.getItem("ShoppingCart");
+            let jsonstr = JSON.parse(ShoppingCart.substr(1, ShoppingCart.length));
+            let productlist = jsonstr.productlist;
+            let list = [];
+            for (let i in productlist) {
+              if (productlist[i].id == id) {
+                jsonstr.totalNumber = parseInt(jsonstr.totalNumber) - parseInt(productlist[i].num);
+                jsonstr.totalAmount = parseFloat(jsonstr.totalAmount) - parseInt(productlist[i].num) * parseFloat(productlist[i].price);
+              }
+              else {
+                list.push(productlist[i]);
+              }
+            }
+            jsonstr.productlist = list;
+            localStorage.setItem("ShoppingCart", "'" + JSON.stringify(jsonstr));
+            getUserShoppingCart()
+            let shoppingCart = localStorage.getItem("ShoppingCart");
+            shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+            this.allGoodsPrice = shoppingCart.totalAmount;
+            this.allGoodsNumber = shoppingCart.totalNumber;
+          }
+        }
 
       },
-      oneChange(index){
+
+       //点击删除显示模态框
+      deleteGoods(index) {
+        this.showHideConfirm = false;
+        this.index=index
+      },
+
+      //商品数量相加
+      addGoods(index) {
+        if (sessionStorage.getItem("userInfo") === null) {
+          let id = this.goodsCart[index].id;
+          let img = this.goodsCart[index].img;
+          let title = this.goodsCart[index].title;
+          let price = this.goodsCart[index].price;
+          addCart(index, img, title, price, id);
+          this.goodsCart[index].num++;
+          this.goodsPrice = this.goodsCart[0].num * this.goodsCart[0].price;
+          let shoppingCart = localStorage.getItem("ShoppingCart");
+          shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+          this.allGoodsPrice = shoppingCart.totalAmount;
+          this.allGoodsNumber = shoppingCart.totalNumber;
+
+        }
+        else {
+          let id = this.goodsCart[index].id;
+          let img = this.goodsCart[index].img;
+          let title = this.goodsCart[index].title;
+          let price = this.goodsCart[index].price;
+          addCart(index, img, title, price, id);
+          getUserShoppingCart();
+          this.goodsCart[index].num++;
+          this.goodsPrice = this.goodsCart[0].num * this.goodsCart[0].price;
+          let shoppingCart = localStorage.getItem("ShoppingCart");
+          shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+          this.allGoodsPrice = shoppingCart.totalAmount;
+          this.allGoodsNumber = shoppingCart.totalNumber;
+
+
+        }
+
+      },
+
+      //商品数量减少
+      minusGoods(index) {
+        if (sessionStorage.getItem("userInfo") === null) {
+          if (this.goodsCart[index].num > 1) {
+
+            let id = this.goodsCart[index].id;
+            let ShoppingCart = localStorage.getItem("ShoppingCart");
+            let jsonstr = JSON.parse(ShoppingCart.substr(1, ShoppingCart.length));
+            let productlist = jsonstr.productlist;
+            if (productlist[index].id === id) {
+              productlist[index].num--
+
+            }
+            if (jsonstr.totalNumber > 1) {
+              jsonstr.totalNumber = parseInt(jsonstr.totalNumber) - 1;
+            }
+            if (jsonstr.totalAmount > productlist[index].price) {
+              jsonstr.totalAmount = parseFloat(jsonstr.totalAmount) - parseFloat(productlist[index].price);
+            }
+
+            this.goodsCart[index].num--;
+            this.goodsPrice = this.goodsCart[0].num * this.goodsCart[0].price;
+            let shoppingCart = localStorage.getItem("ShoppingCart");
+            shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+            this.allGoodsPrice = shoppingCart.totalAmount;
+            this.allGoodsNumber = shoppingCart.totalNumber;
+
+
+          }
+
+        }
+        else {
+          if (this.goodsCart[index].num > 1) {
+            let id = this.goodsCart[index].id;
+            let ShoppingCart = localStorage.getItem("ShoppingCart");
+            let jsonstr = JSON.parse(ShoppingCart.substr(1, ShoppingCart.length));
+            let productlist = jsonstr.productlist;
+            if (productlist[index].id === id) {
+              productlist[index].num--
+
+            }
+            if (jsonstr.totalNumber > 1) {
+              jsonstr.totalNumber = parseInt(jsonstr.totalNumber) - 1;
+            }
+            if (jsonstr.totalAmount > productlist[index].price) {
+              jsonstr.totalAmount = parseFloat(jsonstr.totalAmount) - parseFloat(productlist[index].price);
+            }
+
+            localStorage.setItem("ShoppingCart", "'" + JSON.stringify(jsonstr));
+
+            getUserShoppingCart();
+            this.goodsCart[index].num--;
+            this.goodsPrice = this.goodsCart[0].num * this.goodsCart[0].price;
+            let shoppingCart = localStorage.getItem("ShoppingCart");
+            shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+            this.allGoodsPrice = shoppingCart.totalAmount;
+            this.allGoodsNumber = shoppingCart.totalNumber;
+
+          }
+        }
+      },
+
+
+      oneChange(index) {
         const icon = this.$refs.xuanze;
         const allicon = this.$refs.allChange;
         if (this.$refs.xuanze[index].className === 'iconfont icon-xuanze') {
@@ -89,14 +290,13 @@
         else if (this.$refs.xuanze[index].className === 'iconfont icon-xuanze1') {
           this.$refs.xuanze[index].className = 'iconfont icon-xuanze'
         }
-        for (let i =0;i<icon.length;i++){
+        for (let i = 0; i < icon.length; i++) {
           if (icon[i].className === 'iconfont icon-xuanze') {
             this.$refs.allChange.className = 'iconfont icon-xuanze'
           } else if (icon[i].className === 'iconfont icon-xuanze1') {
             this.$refs.allChange.className = 'iconfont icon-xuanze1'
           }
         }
-
       },
       allchange() {
         const icon = this.$refs.xuanze;
@@ -106,47 +306,25 @@
           for (let i = 0; i < icon.length; i++) {
             icon[i].className = 'iconfont icon-xuanze'
           }
-          const carts = this.goodsCart;
-          let total = 0;
-          let number = 0;
-          for (let i = 0; i < carts.length; i++) {
-            total += carts[i].price * carts[i].number;
-            number += carts[i].number;
-          }
-          this.allGoodsPrice = total;
-          this.allGoodsNumber = number;
 
-        } else if (allChange.className === 'iconfont icon-xuanze') {
+        }
+        else if (allChange.className === 'iconfont icon-xuanze') {
           allChange.className = 'iconfont icon-xuanze1';
           for (let i = 0; i < icon.length; i++) {
             icon[i].className = 'iconfont icon-xuanze1'
           }
-          this.allGoodsPrice = 0;
-          this.allGoodsNumber = 0;
-        }
-
-
-
-      },
-      addGoods(index) {
-        this.goodsCart[index].number++;
-        this.goodsCart[index].goodsPrice=this.goodsCart[index].number*this.goodsCart[index].price
-      },
-      minusGoods(index) {
-        if (this.goodsCart[index].number > 1) {
-          this.goodsCart[index].number--;
-          this.goodsCart[index].goodsPrice = this.goodsCart[index].number * this.goodsCart[index].price
         }
       },
       followGoods() {
         alert("移入成功")
       },
-      deleteGoods(index) {
-        this.goodsCart.splice(index,1)
+      gotoJS(){
+        this.$router.push({path: "/BuyProduct"})
       }
 
+  }
 
-    }
+
   }
 </script>
 <style scoped lang="less" rel="stylesheet/less">

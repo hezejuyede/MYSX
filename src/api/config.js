@@ -140,3 +140,20 @@ export function addCart(index, img, title, price, id) {
 
 
 }
+
+
+export function getUserShoppingCart() {
+  let shoppingCart = localStorage.getItem("ShoppingCart");
+  shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+  axios.post("/api/MobileUserAddProduct", {
+    shoppingCart: shoppingCart
+  })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+}
+
+
