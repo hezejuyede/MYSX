@@ -5,12 +5,20 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import './common/less/base.less'
 import axios from 'axios'
 import VueLazylord from 'vue-lazyload'
+import VDistpicker from 'v-distpicker'
+
+import './api/VeeValidate'
+
+
+
 
 Vue.config.productionTip = false;
 Vue.use(VueAwesomeSwiper);
 Vue.use(VueLazylord, {
   loading: require('./common/image/logo.png')
 });
+Vue.component('v-distpicker', VDistpicker);
+
 
 
 /* eslint-disable no-new */

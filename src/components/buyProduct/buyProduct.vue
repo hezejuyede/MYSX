@@ -1,10 +1,9 @@
 <template>
   <div id="buyProduct">
     <div class="buyProduct-top">
-        <i class="iconfont icon-left-trangle" @click="goBack"></i>
-        <span>购买宝贝</span>
+      <i class="iconfont icon-left-trangle" @click="goBack"></i>
+      <span>购买宝贝</span>
     </div>
-
     <div class="buyProduct-product">
       <div class="buyProduct-product-template">
         <div class="template-img">
@@ -126,7 +125,7 @@
       </div>
       <div class="buyProduct-address-center">
         <div class="">李鑫15550739985</div>
-        <div class="">山东省菏泽市巨野县永丰街道办事处健康路77号巨野县疾病预防控制中心西50米助发农机旁边门市</div>
+        <div class="" @click="changeAddress">山东省菏泽市巨野县永丰街道办事处健康路77号巨野县疾病预防控制中心西50米助发农机旁边门市</div>
       </div>
       <div class="buyProduct-address-right">
         <i class="iconfont icon-right-trangle"></i>
@@ -136,8 +135,6 @@
       <div class="buyProduct-yf-left">运费</div>
       <div class="buyProduct-yf-right">￥0.00</div>
     </div>
-
-
     <div class="buyProduct-bottom">
       <div class="buyProduct-bottom-left">
         <span>实付款:</span>
@@ -154,11 +151,14 @@
       return {}
     },
     methods: {
-      goBack(){
+      goBack() {
         this.$router.push({path: "/"})
       },
+      changeAddress() {
+        this.$router.push({path: "/ChangeAddress"})
+      },
       payment() {
-        alert("hahah")
+        alert("hahha")
       }
     }
   }
@@ -234,12 +234,12 @@
 
     }
 
-    .buyProduct-address{
+    .buyProduct-address {
       height: 100px;
       background-color: @color-white;
       border-bottom: 1px solid @color-F0;
       display: flex;
-      .buyProduct-address-left{
+      .buyProduct-address-left {
         flex: 3;
         display: flex;
         align-items: center;
@@ -247,29 +247,28 @@
         font-size: @font-size-large;
         color: @color-background-d;
       }
-      .buyProduct-address-center{
+      .buyProduct-address-center {
         flex: 6;
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: center;
       }
-      .buyProduct-address-right{
+      .buyProduct-address-right {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-
-
     }
-    .buyProduct-yf{
+
+    .buyProduct-yf {
       height: 60px;
       background-color: @color-white;
-      border-bottom: 1px solid@color-F0;
+      border-bottom: 1px solid @color-F0;
       margin-bottom: 60px;
-      .buyProduct-yf-left{
+      .buyProduct-yf-left {
         height: 60px;
         float: left;
         display: flex;
@@ -278,7 +277,7 @@
         margin-left: 20px;
         font-size: @font-size-large;
       }
-      .buyProduct-yf-right{
+      .buyProduct-yf-right {
         height: 60px;
         float: right;
         display: flex;
