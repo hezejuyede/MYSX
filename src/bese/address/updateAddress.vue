@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="{citySelect:isCitySelect}">
+  <div v-bind:class="{citySelect:isUpdateCitySelect}">
     <div class="citySelect-div">
       <div class="citySelect-div-top">
         <span>填写地址</span>
@@ -46,7 +46,10 @@
         <i class="iconfont icon-right-trangle"></i>
         <p class="TextP">{{phoneText}}</p>
       </div>
+      <div ref="upindex" style="display: none">{{upindex}}</div>
       <button @click="QRTJ">确认提交</button>
+
+
       <modal
         :msg="message"
         :isHideModal="HideModal">
@@ -68,7 +71,7 @@
 
   export default {
     name: 'citySelect',
-    props: ['isCitySelect','showHideAdd'],
+    props: ['isUpdateCitySelect', 'upindex', 'upname', 'upphone', 'upcityDetails', 'upcitys'],
     data() {
       return {
         placeholders: {
@@ -81,14 +84,15 @@
           city: '',
           area: '',
         },
-        cityDetails: '',
-        name:'',
-        phone:'',
-        citys:'',
 
         message: "",
         HideModal:true,
 
+        citys: '',
+        cityDetails: '',
+        name: '',
+        phone: '',
+        index: '',
 
         addressText: '',
         addressState:false,
@@ -132,6 +136,7 @@
           this.nameState = true
         }
 
+
       },
       nameFocus(name) {
         if (name.length === 0) {
@@ -140,7 +145,6 @@
       },
 
       phoneBlur(phone) {
-
         let reg = /^1[34578][0-9]{9}$/;
         let flag = reg.test(phone);
 
@@ -159,6 +163,7 @@
         if (phone.length === 0) {
           this.phoneText = "请填写电话";
         }
+
       },
 
       onSelected(data) {
@@ -169,22 +174,24 @@
 
 
       closeModal() {
-        this.isCitySelect1 = true;
-        this.$emit("showHideAdd", this.isCitySelect1)
+        this.isCitySelect2 = true;
+        this.$emit("showHideUpdateAdd", this.isCitySelect2)
 
       },
 
 
       QRTJ() {
         if (this.citys !== "" && this.phoneState === true && this.nameState === true && this.addressState === true) {
+          let index = this.$refs.upindex.value;
           let address = {
             citys: this.citys,
             cityDetails: this.cityDetails,
             name: this.name,
             phone: this.phone,
           };
-          axios.post("/api/setUserAddressList", {
-            address: address
+          axios.post("/api/updateUserAddressList", {
+            address: address,
+            index:index
           })
             .then((res) => {
               if (res.data === "1") {
@@ -323,5 +330,3 @@
 
 
 </style>
-
-

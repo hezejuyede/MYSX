@@ -18,23 +18,23 @@
     </div>
     <div  v-bind:class="{'BottomNone':isBottom,'BottomBlock':!isBottom}">
       <div class="searchNavbar-bottom">
-      <router-link to="" >
+      <router-link to="/" >
         <i class="iconfont icon-zhuye"></i>
         <span class="">首页</span>
       </router-link>
-      <router-link to="" >
+      <router-link to="/Classify" >
         <i class="iconfont icon-fenlei"></i>
         <span class="">分类</span>
       </router-link>
-      <router-link to="" >
+      <router-link to="/Nearby" >
         <i class="iconfont icon-fujin"></i>
         <span class="">附近</span>
       </router-link>
-      <router-link to="" >
+      <router-link to="/ShoppingCart" >
         <i class="iconfont icon-gouwuche1"></i>
         <span class="">购物车</span>
       </router-link>
-      <router-link to="" >
+      <router-link to="/UserInfo" >
         <i class="iconfont icon-unie64d"></i>
         <span class="">我的</span>
       </router-link>

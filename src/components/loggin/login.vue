@@ -18,19 +18,32 @@
           <div class="login-userName">
             <div class="">账号</div>
             <div class="">
-              <input type="text" placeholder="用户名/邮箱/已验证手机" ref="username">
+              <input
+                @blur="userNameBlur(username)"
+                @focus="userNameFocus(username)"
+                v-model="username"
+                type="text"
+                placeholder="用户名/已验证手机"/>
             </div>
-            <div>
-              <i class="iconfont icon-guanbi"></i>
+            <div class="userErrText">
+              <span>{{userNameErrText}}</span>
             </div>
           </div>
+
+
           <div class="login-password">
             <div class="">密码</div>
             <div class="">
-              <input type="password" placeholder="请输入密码" ref="password">
+              <input
+
+                @blur="passwordBlur(password)"
+                @focus="passwordFocus(password)"
+                type="password"
+                v-model="password"
+                placeholder="请输入密码"/>
             </div>
-            <div>
-              <i class="iconfont icon-guanbi"></i>
+            <div class="passwordErrText">
+              <span>{{passwordErrText}}</span>
             </div>
           </div>
         </div>
@@ -82,28 +95,50 @@
         <div class=""></div>
       </div>
       <div class="login-footer-center">
-        <i class="iconfont icon-qq"></i>
-        <i class="iconfont icon-weixin"></i>
+        <i class="iconfont icon-qq1"></i>
+        <i class="iconfont icon-weixin1"></i>
       </div>
       <div class="login-footer-bottom">
         <span class="">登录即代表您已同意亿成隐私政策</span>
       </div>
 
     </footer>
+    <modal
+      :msg="message"
+      :isHideModal="HideModal">
+    </modal>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import axios from 'axios';
+  import Modal from '../../bese/modal/modal.vue'
 
   export default {
     name: 'login',
+    components: {
+      Modal
+    },
     data() {
       return {
         ismlogin: false,
         ismnlogin: true,
         isuserlogin: true,
-        isdxlogin: false
+        isdxlogin: false,
+        message: '',
+        HideModal: true,
+
+        username: '',
+        password: '',
+
+
+        userNameErrText: '',
+        userNameState: false,
+
+        passwordErrText: '',
+        passwordState: false
+
+
       }
 
     },
@@ -123,39 +158,122 @@
         this.isuserlogin = false;
         this.isdxlogin = true;
       },
-      login() {
-        axios.post("/api/userlogin", {
-          username: this.$refs.username.value,
-          password: this.$refs.password.value
-        })
-          .then((res) => {
-            if (res.data.state === "1") {
 
-              let userInfo = res.data;
-              userInfo = JSON.stringify(userInfo);
-              console.log(userInfo);
-              sessionStorage.setItem("userInfo", userInfo);
-
-              alert("登录成功");
-              window.location.assign("/")
-            }
-            else if (res.data === "2") {
-              alert("该用户没有注册")
-            }
-            else if (res.data === "-1") {
-              alert(" 密码错误")
-            }
-
-          })
-          .catch((err) => {
-            console.log(err)
-          });
-      },
       gotoregister() {
         this.$router.push({path: "/Register"})
-      }
-    },
-    components: {}
+      },
+
+
+      userNameBlur(username) {
+
+        if (username.length === 0) {
+          this.userNameErrText = "用户名不能为空";
+        }
+        else {
+          this.userNameErrText = "";
+          this.userNameState = true
+        }
+      },
+      userNameFocus(username) {
+        if (username.length === 0) {
+          this.userNameErrText = "请填写用户名";
+        }
+      },
+
+
+      passwordBlur(password) {
+
+        if (password.length === 0) {
+          this.passwordErrText = "密码不能为空";
+        }
+        else {
+          this.passwordErrText = "";
+          this.passwordState = true
+        }
+      },
+      passwordFocus(password) {
+        if (password.length === 0) {
+          this.passwordErrText = "请填写密码";
+        }
+      },
+
+      login() {
+        if (this.userNameState === true && this.passwordState === true) {
+          axios.post("/api/userlogin", {
+            username: this.username,
+            password: this.password
+          })
+            .then((res) => {
+              if (res.data.state === "1") {
+
+                let userInfo = res.data;
+                userInfo = JSON.stringify(userInfo);
+                console.log(userInfo);
+                sessionStorage.setItem("userInfo", userInfo);
+
+                this.message = "登录成功";
+                this.HideModal = false;
+                const that = this;
+
+                function a() {
+                  that.message = "";
+                  that.HideModal = true;
+                  window.location.assign("/")
+                }
+
+                setTimeout(a, 2000);
+
+              }
+              else if (res.data === "2") {
+
+                this.message = "该用户没有注册";
+                this.HideModal = false;
+                const that = this;
+
+                function b() {
+                  that.message = "";
+                  that.HideModal = true;
+                  that.username = '';
+                  that.password = '';
+                }
+
+                setTimeout(b, 2000);
+              }
+              else if (res.data === "-1") {
+                this.message = "密码错误";
+                this.HideModal = false;
+                const that = this;
+
+                function c() {
+                  that.message = "";
+                  that.HideModal = true;
+                  that.password = '';
+                }
+
+                setTimeout(c, 2000);
+
+              }
+            })
+            .catch((err) => {
+              console.log(err)
+            });
+        }
+        else {
+          this.message = "请正确填写信息";
+          this.HideModal = false;
+          const that = this;
+
+          function a() {
+            that.message = "";
+            that.HideModal = true;
+          }
+
+          setTimeout(a, 2000);
+
+        }
+
+      },
+    }
   }
 </script>
 <style scoped lang="less" rel="stylesheet/less">
@@ -223,7 +341,7 @@
 
     }
     .loginInput {
-      height: 100px;
+      height: 150px;
       width: 90%;
       margin: 0 auto;
       display: flex;
@@ -235,34 +353,28 @@
         display: flex;
         align-items: center;
         border-bottom: 1px solid @color-F0;
+        position: relative;
         div:first-child {
           flex: 2;
           display: flex;
           align-items: center;
           justify-content: center;
+          margin-bottom: 10px;
         }
         div:nth-child(2) {
           flex: 7;
+          margin-bottom: 10px;
           input {
             height: 30px;
             font-size: @font-size-medium;
           }
         }
-        div:last-child {
-          flex: 1;
-          display: flex;
-          align-content: center;
-          justify-content: center;
-          .icon-guanbi {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background-color: @color-background-d;
-            text-align: center;
-            line-height: 25px;
-            color: @color-white;
-          }
-
+        .userErrText {
+          position: absolute;
+          bottom: 5px;
+          left: 50px;
+          font-size: @font-size-medium;
+          color: @color-red;
         }
 
       }
@@ -271,34 +383,29 @@
         display: flex;
         align-items: center;
         border-bottom: 1px solid @color-F0;
+        position: relative;
         div:first-child {
           flex: 2;
           display: flex;
           align-items: center;
           justify-content: center;
+          margin-bottom: 10px;
 
         }
         div:nth-child(2) {
           flex: 7;
+          margin-bottom: 10px;
           input {
             height: 30px;
             font-size: @font-size-medium
           }
         }
-        div:last-child {
-          flex: 1;
-          display: flex;
-          align-content: center;
-          justify-content: center;
-          .icon-guanbi {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background-color: @color-background-d;
-            text-align: center;
-            line-height: 25px;
-            color: @color-white;
-          }
+        .passwordErrText {
+          position: absolute;
+          bottom: 5px;
+          left: 50px;
+          font-size: @font-size-medium;
+          color: @color-red;
         }
       }
 
@@ -439,15 +546,15 @@
       display: flex;
       align-content: center;
       justify-content: center;
-      .icon-qq {
+      .icon-qq1 {
+        color: @color-blue;
         margin-right: 10px;
-        color: @color-green;
-        font-size: @font-size-large-xx;
+        font-size: @font-size-large-xxxxx;
       }
-      .icon-weixin {
+      .icon-weixin1 {
         margin-left: 10px;
         color: @color-green;
-        font-size: @font-size-large-xx;
+        font-size: @font-size-large-xxxxx;
       }
 
     }

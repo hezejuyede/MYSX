@@ -1,156 +1,112 @@
 <template>
-  <div id="buyProduct">
-    <div class="buyProduct-top">
-      <i class="iconfont icon-left-trangle" @click="goBack"></i>
-      <span>购买宝贝</span>
+  <div class="buyProductIndex">
+    <div class="noLogin" v-if="login !=='1'">
+      <img src="../../common/image/logo.png" alt="">
+      <p>您好，登录才能购买</p>
+      <p @click="gotoLogin">点击前往登录页</p>
     </div>
-    <div class="buyProduct-product">
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
-        </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
+    <div id="buyProduct" v-if="login ==='1'">
+      <div class="buyProduct-top">
+        <i class="iconfont icon-left-trangle" @click="goBack"></i>
+        <span>购买宝贝</span>
+      </div>
+      <div class="buyProduct-product">
+        <div class="buyProduct-product-template" v-for="(item,index) in shoppingCart">
+          <div class="template-img">
+            <img :src="item.img" alt="">
           </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
+          <div class="template-info">
+            <div class="template-info-title">
+              亿成优生鲜-{{item.title}}
+            </div>
+            <div class="template-info-info">
+              <div class="template-info-info-price">总价:￥{{item.price}}</div>
+              <div class="template-info-info-number">数量：{{item.num}}件</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
+      <div class="buyProduct-address">
+        <div class="buyProduct-address-left">
+          收货地址
         </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
-          </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
-          </div>
+        <div class="buyProduct-address-center">
+          <div class="">{{name}}{{phone}}</div>
+          <div class="" @click="changeAddress">{{citys}}{{cityDetails}}</div>
+        </div>
+        <div class="buyProduct-address-right">
+          <i class="iconfont icon-right-trangle"></i>
         </div>
       </div>
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
-        </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
-          </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
-          </div>
-        </div>
+      <div class="buyProduct-yf">
+        <div class="buyProduct-yf-left">运费</div>
+        <div class="buyProduct-yf-right">￥0.00</div>
       </div>
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
-        </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
-          </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
-          </div>
-        </div>
+      <div class="buyProduct-bottom">
+        <div class="buyProduct-bottom-left">
+          <span>实付款:</span>
+          <span>￥{{totalPrice}}元</span></div>
+        <div class="buyProduct-bottom-right" @click="payment">确认</div>
       </div>
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
-        </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
-          </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
-          </div>
-        </div>
-      </div>
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
-        </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
-          </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
-          </div>
-        </div>
-      </div>
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
-        </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
-          </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
-          </div>
-        </div>
-      </div>
-      <div class="buyProduct-product-template">
-        <div class="template-img">
-          <img src="http://www.ilqiqi.top/images/mYc/goods/crad/8.jpg" alt="">
-        </div>
-        <div class="template-info">
-          <div class="template-info-title">
-            亿成优生鲜帝王蟹
-          </div>
-          <div class="template-info-info">
-            <div class="template-info-info-price">总价:￥199</div>
-            <div class="template-info-info-number">数量：1件</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="buyProduct-address">
-      <div class="buyProduct-address-left">
-        收货地址
-      </div>
-      <div class="buyProduct-address-center">
-        <div class="">李鑫15550739985</div>
-        <div class="" @click="changeAddress">山东省菏泽市巨野县永丰街道办事处健康路77号巨野县疾病预防控制中心西50米助发农机旁边门市</div>
-      </div>
-      <div class="buyProduct-address-right">
-        <i class="iconfont icon-right-trangle"></i>
-      </div>
-    </div>
-    <div class="buyProduct-yf">
-      <div class="buyProduct-yf-left">运费</div>
-      <div class="buyProduct-yf-right">￥0.00</div>
-    </div>
-    <div class="buyProduct-bottom">
-      <div class="buyProduct-bottom-left">
-        <span>实付款:</span>
-        <span>￥200.00</span></div>
-      <div class="buyProduct-bottom-right" @click="payment">确认</div>
     </div>
   </div>
+
 </template>
 
 <script type="text/ecmascript-6">
+  import axios from 'axios'
   export default {
     name: 'buyProduct',
     data() {
-      return {}
+      return {
+        shoppingCart: [],
+        totalPrice: 0,
+        login:'',
+        phone:'',
+        name:'',
+        citys:'',
+        cityDetails:''
+
+      }
+    },
+    created(){
+      this._getUserInfo()
+
+
     },
     methods: {
+      _getUserInfo() {
+        if (sessionStorage.getItem("userInfo") === null) {
+          console.log("用户还没有登录")
+        }
+        else {
+          let UserInfo = sessionStorage.getItem("userInfo");
+          UserInfo = JSON.parse(UserInfo);
+          this.login = UserInfo.state;
+
+          axios.post("/api/MobileUserPayment")
+            .then((res) => {
+
+              let addressList = res.data.addressList;
+              let address  = res.data.addressMr;
+              this.shoppingCart = addressList.productlist;
+              this.totalPrice = addressList.totalAmount;
+              this.name = address.name;
+              this.phone = address.phone;
+              this.citys = address.citys;
+              this.cityDetails = address.cityDetails;
+
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      },
+
+
+      gotoLogin(){
+        this.$router.push({path: "/Login"})
+      },
       goBack() {
         this.$router.push({path: "/"})
       },
@@ -165,6 +121,28 @@
 </script>
 <style scoped lang="less" rel="stylesheet/less">
   @import "../../common/less/base";
+  .buyProductIndex{
+    width: 100%;
+    height: 100%;
+    .noLogin{
+      width: 100%;
+      height: 100%;
+      background-color: @color-F0;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      font-size: @font-size-large-xxx;
+      justify-content: center;
+      img{
+        margin-bottom: 50px;
+      }
+      p{
+        margin-bottom: 50px;
+      }
+    }
+
+  }
+
 
   #buyProduct {
     background-color: @color-F0;

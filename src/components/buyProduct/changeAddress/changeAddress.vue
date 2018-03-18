@@ -7,10 +7,15 @@
     </div>
     <div class="changeAddress-bottom">
       <div class="changeAddress-bottom-template" v-for="(item,index) in addressList">
-        <div class="changeAddress-bottom-template-top">{{item.top}}</div>
+        <div class="changeAddress-bottom-template-top">
+          {{item.name}}{{item.phone}}
+          <span class="szmr" @click="szmr(index)">设为默认</span>
+        </div>
         <div class="changeAddress-bottom-template-bottom">
-          {{item.bottom}}
-          <i class="iconfont icon-bianji" @click="updateAddress(index)"></i>
+          {{item.citys}}{{item.cityDetails}}
+
+          <i class="iconfont icon-bianji"
+             @click="updateAddress(index,item.name,item.phone,item.citys,item.cityDetails,)"></i>
           <i class="iconfont icon-shanchu" @click="deleteAddress(index)"></i>
         </div>
       </div>
@@ -19,10 +24,20 @@
       @showHideAdd="showHideAdd"
       :cites="cites"
       :isCitySelect="isCitySelect"></add>
+    <update-address
+      @showHideUpdateAdd="showHideUpdateAdd"
+      :isUpdateCitySelect="isUpdateCitySelect"
+      :upindex="index"
+      :upname='name'
+      :upphone='phone'
+      :upcitys='citys'
+      :upcityDetails='cityDetails'>
+    </update-address>
     <modal
       :msg="message"
       :isHideModal="HideModal">
     </modal>
+
     <div class="newAddress">
       <span @click="addAddress">新增收货地址</span>
     </div>
@@ -34,6 +49,7 @@
 <script type="text/ecmascript-6">
   import axios from 'axios'
   import Add from "../../../bese/address/address.vue"
+  import UpdateAddress from '../../../bese/address/updateAddress.vue'
   import Modal from '../../../bese/modal/modal.vue'
 
 
@@ -43,19 +59,28 @@
   export default {
     components: {
       Add,
-      Modal
+      Modal,
+      UpdateAddress
     },
     name: 'changeAddress',
 
     data() {
       return {
         addressList: [],
-        cites:"",
-        isCitySelect:true,
+        cites: "",
+        isCitySelect: true,
         hideAdd: true,
-        message:'',
-        HideModal:true
 
+        message: '',
+        HideModal: true,
+
+
+        isUpdateCitySelect:true,
+        index: '',
+        name: '',
+        phone: '',
+        citys: '',
+        cityDetails:''
       }
     },
     created() {
@@ -65,6 +90,7 @@
     methods: {
       _getUserInfo() {
       },
+
       _getAddress() {
         axios.post("/api/getUserAddressList")
           .then((res) => {
@@ -77,19 +103,22 @@
             console.log(err)
           })
       },
+
       addAddress() {
         this.isCitySelect = false;
 
       },
-      updateAddress(index) {
-        axios.post("/updateUserAddressList",{
-          index:index
-        })
-          .then((res) => {
 
-          })
-          .catch((err) => {
-          })
+      updateAddress(index, name, phone, citys, cityDetails) {
+        this.isUpdateCitySelect = false;
+        this.index = index;
+        this.name = name;
+        this.phone = phone;
+        this.citys = citys;
+        this.cityDetails = cityDetails;
+
+
+
       },
 
       deleteAddress(index) {
@@ -123,9 +152,53 @@
         alert("hhahah")
       },
 
+      szmr(index) {
+        axios.post('/api/mrUserAddressList', {
+          index: index
+        })
+          .then((res) => {
+            if (res.data === "1") {
+              this.message = "设置成功";
+              this.HideModal = false;
+              const that = this;
+
+              function a() {
+                that.message = "";
+                that.HideModal = true;
+                window.location.assign("/ChangeAddress")
+              }
+
+              setTimeout(a, 2000);
+            }
+            else if (res.data === "-1") {
+              this.message = "设置失败";
+              this.HideModal = false;
+              const that = this;
+
+              function b() {
+                that.message = "";
+                that.HideModal = true;
+              }
+
+              setTimeout(b, 2000);
+            }
+          })
+          .catch((err)=>{
+            console.log(err)
+          })
+
+      },
+
+
       showHideAdd(ev){
         this.isCitySelect = ev
+      },
+
+      showHideUpdateAdd(ev){
+        this.isUpdateCitySelect = ev
       }
+
+
 
     }
   }
@@ -166,6 +239,13 @@
         margin: 0 auto;
         height: 30px;
         line-height: 30px;
+        position: relative;
+        .szmr{
+          position: absolute;
+          top:0;
+          right: 0;
+
+        }
 
       }
       .changeAddress-bottom-template-bottom {
@@ -173,6 +253,7 @@
         margin: 0 auto;
         height: 60px;
         position: relative;
+
         .icon-bianji{
           font-size: @font-size-large-xx;
           position: absolute;
