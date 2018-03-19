@@ -1,8 +1,10 @@
 <template>
   <div id="banner">
     <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide v-for="(item,index) in imgs" :key="item.id">
-        <img :src="item.img" class="bannerimg" style="width: 100%" @click="showBanner(index)">
+      <swiper-slide v-for="(item,index) in bannerImg" :key="item.id">
+        <img :src="item.img"
+             style="width: 100%"
+             @click="showBanner(index,item.id,item.sindex)">
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
       <div class="swiper-scrollbar" slot="scrollbar"></div>
@@ -23,7 +25,7 @@
     },
     data() {
       return{
-        imgs: [],
+        bannerImg: [],
         swiperOption: {
           direction: "horizontal",
           loop: true,
@@ -49,14 +51,14 @@
       _getBanner() {
         axios.get('/api/banner')
           .then((res) => {
-          this.imgs = res.data;
+          this.bannerImg = res.data;
         })
           .catch((err)=>{
           console.log(err)
           })
       },
-      showBanner(index) {
-        this.$router.push({path: "/GoodsDetails"})
+      showBanner(index,id,sindex) {
+        this.$router.push({path: "/GoodsDetails/", query: {id: id, index: sindex}})
       },
     },
   }

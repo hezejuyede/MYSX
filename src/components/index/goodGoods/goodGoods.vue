@@ -13,7 +13,7 @@
               <span>{{item.price}}￥</span>
               <span>多个</span>
             </p>
-            <div @click="showjx4(index)">
+            <div @click="showjx4(index,item.id,item.sindex)">
               <img :src="item.img" class="goodsImg">
               <p class="center-ul-li-a-p-title">{{item.title}}</p>
               <p class="center-ul-li-a-p-text">亿成，多，快，好，省</p>
@@ -42,7 +42,7 @@
                 <span>￥{{item.price}}</span>
                 <span>{{item.number}}只</span>
               </div>
-              <img :src="item.img" @click="showCJ(index)">
+              <img :src="item.img" @click="showCJ(index,item.id,item.sindex)">
             </div>
             <p>{{item.title}}</p>
             <p>每周三上新货</p>
@@ -56,7 +56,7 @@
                 <span>￥{{item.price}}</span>
                 <span>{{item.number}}只</span>
               </div>
-              <img :src="item.img" alt="" @click="showRM(index)">
+              <img :src="item.img" alt="" @click="showRM(index,item.id,item.sindex)">
             </div>
             <div class="hot-topone-goods">
               <span>{{item.title}}</span><br>
@@ -142,14 +142,14 @@
             console.log(err)
           })
       },
-      showCJ(index) {
-        this.$router.push({path: '/GoodsDetails'})
+      showCJ(index,id,sindex) {
+        this.$router.push({path: "/GoodsDetails/", query: {id: id, index: sindex}})
       },
-      showRM(index) {
-        this.$router.push({path: '/GoodsDetails'})
+      showRM(index,id,sindex) {
+        this.$router.push({path: "/GoodsDetails/", query: {id: id, index: sindex}})
       },
-      showjx4(index) {
-        this.$router.push({path: '/GoodsDetails'})
+      showjx4(index,id,sindex) {
+        this.$router.push({path: "/GoodsDetails/", query: {id: id, index: sindex}})
       },
     }
   }
