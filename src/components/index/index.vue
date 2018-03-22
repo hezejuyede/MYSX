@@ -164,6 +164,7 @@
 
   .loading-container {
     position: absolute;
+    max-width: 640px;
     width: 100%;
     top: 50%;
     transform: translateY(-50%);

@@ -6,18 +6,23 @@
       <p @click="gotoLogin">点击前往登录页</p>
     </div>
     <div id="userInfo" v-if="login ==='1'">
+      <sz-user-info
+        @showHideSzUserInfo="showHideSzUserInfo"
+        :isSzUserInfo="isSzUserInfo">
+      </sz-user-info>
+
       <search-navbar></search-navbar>
       <div class="mysx-userInfo">
         <div class="userInfo-top">
           <div class="userInfo-top-top">
             <i class="iconfont icon-xiaoxi2"></i>
-            <i class="iconfont icon-shezhi"></i>
+            <i class="iconfont icon-shezhi" @click="szUserInfo"></i>
           </div>
           <div class="userInfo-top-bottom">
-            <img :src="avatar" alt="">
+            <img :src="avatar" alt="" @click="szUserInfo">
             <div class="">
-              <p class="">{{username}}</p>
-              <router-link to="">个人信息 ></router-link>
+              <p class="" @click="szUserInfo">{{username}}</p>
+              <p class="" @click="szUserInfo">个人信息 ></p>
             </div>
           </div>
         </div>
@@ -32,84 +37,107 @@
           </div>
           <div class="userInfo-content-bottom" v-for="(item,index) in Bottom">
             <div class="bottom-one" v-show="index==0&&index==num">
-              <div class="scTemplate" v-for="(item,index) in collect">
-                <div class="scTemplate-img" @click='goToGoods(index)'>
-                  <img :src="item.img">
-                </div>
-                <div class="scTemplate-goods" @click='goToGoods(index)'>
-                  <p class="title-text">{{item.title}}</p>
-                  <p class="">价格：￥{{item.price}}</p>
-                  <p class="">数量：{{item.number}}</p>
-                </div>
-                <div class="scTemplate-cz">
-                  <p class="" @click="addCart(index)">加入购物车</p>
-                  <p class="" @click="deleteGoods(index)">移除收藏</p>
+              <div class="noData" v-if="collect.length===0">
+                您暂无收藏
+              </div>
+              <div class="" v-if="collect.length>0">
+                <div class="scTemplate" v-for="(item,index) in collect">
+                  <div class="scTemplate-img" @click='goToGoods(index)'>
+                    <img :src="item.img">
+                  </div>
+                  <div class="scTemplate-goods" @click='goToGoods(index)'>
+                    <p class="title-text">{{item.title}}</p>
+                    <p class="">价格：￥{{item.price}}</p>
+                    <p class="">数量：{{item.number}}</p>
+                  </div>
+                  <div class="scTemplate-cz">
+                    <p class="" @click="addCart(index)">加入购物车</p>
+                    <p class="" @click="deleteGoods(index)">移除收藏</p>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="bottom-two" v-show="index==1&&index==num">
               <div class="bottom-two-top">
-                <div v-for="(item,index) in dpj" :class="{'red':index===num1}" @click="tab1(index)">
+                <div v-for="(item,index) in dpj"
+                     :class="{'red':index===num1}"
+                     @click="tab1(index)">
                   {{item.text}}
                 </div>
               </div>
-              <div class="bottom-two-bottom" v-for="(item,index) in twoBottom">
+              <div class="bottom-two-bottom"
+                   v-for="(item,index) in twoBottom">
                 <div class="bottom-two-bottom-ypj" v-show="index==0&&index==num1">
-                  <div class="ypj-template" v-for="(item,index) in ypl">
-                    <div class="template-img">
-                      <img :src="item.img" style="width: 60px;height: 60px">
-                    </div>
-                    <div class="template-info">
-                      <div class="template-info-top">
-                        <div class="clearfix template-star">
-                          <i class="iconfont icon-xingzhuang60kaobei2"></i>
-                          <i class="iconfont icon-xingzhuang60kaobei2"></i>
-                          <i class="iconfont icon-xingzhuang60kaobei2"></i>
-                          <i class="iconfont icon-xingzhuang60kaobei2"></i>
-                          <i class="iconfont icon-xingzhuang60kaobei2"></i>
-                        </div>
-                        <div class="clearfix template-time">
-                          <span>{{item.time}}</span>
-                        </div>
+                  <div class="noData" v-if="ypl.length ===0">
+                    没有已评论订单
+                  </div>
+                  <div class="" v-if="ypl.length >0">
+                    <div class="ypj-template" v-for="(item,index) in ypl">
+                      <div class="template-img">
+                        <img :src="item.img" style="width: 60px;height: 60px">
                       </div>
-                      <div class="template-content">
-                        {{item.text}}
+                      <div class="template-info">
+                        <div class="template-info-top">
+                          <div class="clearfix template-star">
+                            <i class="iconfont icon-xingzhuang60kaobei2"></i>
+                            <i class="iconfont icon-xingzhuang60kaobei2"></i>
+                            <i class="iconfont icon-xingzhuang60kaobei2"></i>
+                            <i class="iconfont icon-xingzhuang60kaobei2"></i>
+                            <i class="iconfont icon-xingzhuang60kaobei2"></i>
+                          </div>
+                          <div class="clearfix template-time">
+                            <span>{{yplTime}}</span>
+                          </div>
+                        </div>
+                        <div class="template-content">
+                          {{item.pl}}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="bottom-two-bottom-wpj" v-show="index==1&&index==num1">
-                  <div class="wpj-template" v-for="(item,index) in wpl">
-                    <div class="template-img">
-                      <img :src="item.img" style="width: 60px;height: 60px">
-                    </div>
-                    <div class="template-info">
-                      <div class="template-info-top">
-                        <div class="clearfix template-star">
-                          {{item.title}}
-                        </div>
-                        <div class="clearfix template-time">
-                          <span>下单时间：{{item.time}}</span>
-                        </div>
+                  <div class="noData" v-if="ypl.length ===0">
+                    没有未评论订单
+                  </div>
+                  <div class="" v-if="ypl.length >0">
+                    <div class="wpj-template" v-for="(item,index) in wpl">
+                      <div class="template-img">
+                        <img :src="item.img" style="width: 60px;height: 60px">
                       </div>
-                      <div class="template-content">
-                        去评论
+                      <div class="template-info">
+                        <div class="template-info-top">
+                          <div class="clearfix template-star">
+                            {{item.title}}
+                          </div>
+                          <div class="clearfix template-time">
+                            <span>下单时间：{{wplTime}}</span>
+                          </div>
+                        </div>
+                        <div class="template-content">
+                          去评论
+                        </div>
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
+
             </div>
             <div class="bottom-three" v-show="index==2&&index==num">
-              <div class="" v-for="(item,index) in ye">
+              <div class="">
                 <i class="iconfont icon-yue"></i><br>
-                <span class="ye">￥{{item.ye}}</span>
+                <span class="ye">￥{{ye}}</span>
                 <p @click="tx">提现</p>
                 <p @click="cz">充值</p>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="loading-container" v-show="ye.length===0">
+        <loading></loading>
       </div>
     </div>
   </div>
@@ -118,10 +146,16 @@
 
 <script type="text/ecmascript-6">
   import SearchNavbar from "../../bese/searchNavbar/seachNavbar.vue";
-  import axios from 'axios'
+  import Loading from '../../bese/loading/loading.vue';
+  import SzUserInfo from './szUserInfo/szUserInfo.vue'
+  import axios from 'axios';
 
   export default {
-    components: {SearchNavbar},
+    components: {
+      SearchNavbar,
+      Loading,
+      SzUserInfo
+    },
     name: 'userInfo',
     data() {
       return {
@@ -133,21 +167,36 @@
         Bottom: [{}, {}, {}],
         dpj: [{text: '已经评论'}, {text: "待评论"}],
         twoBottom: [{}, {}],
-        userInfo:[],
-        collect: [],
-        ypl:[],
-        wpl:[],
-        info:[],
-        ye:[],
         num: 0,
         num1: 0,
-        avatar:'',
-        username:'',
-        login:''
+
+
+        avatar: '',
+        username: '',
+        login: '',
+
+
+        collect: [],
+        ypl: [],
+        yplTime: '',
+        wplTime: '',
+        wpl: [],
+        info: [],
+        ye: '',
+
+        isSzUserInfo:true
+
+
+
+
+
       }
     },
     created() {
       this._getUserCollect();
+      setTimeout(()=>{
+        this. _getUserInfo()
+      },2000);
     },
     methods: {
       _getUserCollect() {
@@ -158,25 +207,54 @@
           let UserInfo = sessionStorage.getItem("userInfo");
           UserInfo = JSON.parse(UserInfo);
           this.login = UserInfo.state;
-          axios.get('/api/mUserInfos')
-            .then((res) => {
-              this.collect = res.data[0].collect;
-              this.userInfo = res.data[0].userInfo;
-              this.ypl = res.data[0].ypl;
-              this.wpl = res.data[0].wpl;
-              this.info = res.data[0].info;
-              this.ye = res.data[0].ye;
-              this.username = this.userInfo[0].username;
-              this.avatar = this.userInfo[1].avatar;
+          this.avatar = UserInfo.avatar;
+          this.username = UserInfo.username;
 
-            })
+        }
+      },
+      _getUserInfo() {
+        if (this.login === '1') {
+          axios.all([
+            axios.post('/api/userOrderPJ'),
+            axios.post('/api/userBalance')
+          ])
+            .then(axios.spread((OrderPJ, Balance) => {
+              if (OrderPJ.data.length > 0) {
+                let pl = OrderPJ.data;
+                let ypl = [];
+                let wpl = [];
+                for (let i = 0; i < pl.length; i++) {
+                  if (pl[i].orderState === "未评价") {
+                    wpl.push(pl[i])
+                  }
+                  else if (pl[i].orderState === "已评价") {
+                    ypl.push(pl[i])
+                  }
+                }
+                if (ypl.length > 0) {
+                  this.ypl = ypl[0].orderDetail;
+                  this.yplTime = ypl[0].orderTime;
+                }
+                if (wpl.length > 0) {
+                  this.wpl = wpl[0].orderDetail;
+                  this.wplTime = wpl[0].orderTime;
+                }
+              }
+              this.ye = Balance.data
+            }))
             .catch((err) => {
               console.log(err)
             })
         }
+
       },
 
-
+      szUserInfo() {
+        this.isSzUserInfo = false;
+      },
+      showHideSzUserInfo(ev) {
+        this.isSzUserInfo = ev
+      },
 
       tab(index) {
         this.num = index;
@@ -187,21 +265,25 @@
       goToGoods(index) {
         console.log(index)
       },
+
+
+
+
+
+
+
       addCart(index) {
         console.log(index)
 
       },
 
-
       deleteGoods(index) {
         this.collect.splice(index, 1);
       },
 
-      gotoLogin(){
+      gotoLogin() {
         this.$router.push({path: "/Login"})
       },
-
-
 
 
       tx() {
@@ -215,10 +297,9 @@
 </script>
 <style scoped lang="less" rel="stylesheet/less">
   @import "../../common/less/base";
-  .buyProductIndex{
-    width: 100%;
-    height: 100%;
-    .noLogin{
+
+  .buyProductIndex {
+    .noLogin {
       width: 100%;
       height: 100%;
       background-color: @color-F0;
@@ -227,22 +308,19 @@
       flex-direction: column;
       font-size: @font-size-large-xxx;
       justify-content: center;
-      img{
+      img {
         margin-bottom: 50px;
       }
-      p{
+      p {
         margin-bottom: 50px;
       }
     }
 
   }
 
-
-
-
   #userInfo {
-    width: 100%;
-    overflow: hidden;
+    position: relative;
+    z-index: 9;
     .mysx-userInfo {
       .red {
         color: @color-red;
@@ -321,6 +399,16 @@
           }
         }
         .userInfo-content-bottom {
+          .noData{
+            width: 95%;
+            margin: 10px auto;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: @font-size-large;
+            color: @color-red;
+          }
           .bottom-one {
             .scTemplate {
               display: flex;
@@ -479,8 +567,18 @@
         }
       }
     }
+
   }
 
 
+
+
+  .loading-container {
+    position: absolute;
+    max-width: 640px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 </style>
 

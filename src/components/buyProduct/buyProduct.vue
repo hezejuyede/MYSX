@@ -31,8 +31,13 @@
           收货地址
         </div>
         <div class="buyProduct-address-center">
-          <div class="">{{name}}{{phone}}</div>
-          <div class="" @click="changeAddress">{{citys}}{{cityDetails}}</div>
+          <div class="" v-if="phone.length>0">
+            <div class="">{{name}}{{phone}}</div>
+            <div class="" @click="changeAddress">{{citys}}{{cityDetails}}</div>
+          </div>
+          <div class="" v-if="phone.length==0">
+            <span @click="changeAddress">添加地址</span>
+          </div>
         </div>
         <div class="buyProduct-address-right">
           <i class="iconfont icon-right-trangle"></i>

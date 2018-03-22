@@ -50,27 +50,35 @@
       @ConfirmEvent="confirmEvent"
       :confirmMessage="confirmMessage"
       :showHideConfirm="showHideConfirm"></confirm>
+    <div class="loading-container" v-show="!goodsCart.length">
+      <loading></loading>
+    </div>
   </div>
 </template>
+
+
+
 
 <script type="text/ecmascript-6">
   import SearchNavbar from "../../bese/searchNavbar/seachNavbar.vue";
   import Confirm from '../../bese/confirm/confirm.vue'
+  import Loading from '../../bese/loading/loading.vue'
   import axios from 'axios';
-  import {addCart,getUserShoppingCart} from '../../api/config'
+  import {addCart, getUserShoppingCart} from '../../api/config'
 
   export default {
     components: {
       SearchNavbar,
-      Confirm
+      Confirm,
+      Loading
     },
     name: 'shoppingCart',
     data() {
       return {
         showHideConfirm: true,
         confirmMessage: '确认删除',
-        index:'',
-        confirm:false,
+        index: '',
+        confirm: false,
         goodsCart: [],
         goodsPrice: 0,
         allGoodsPrice: 0,
@@ -81,10 +89,10 @@
     mounted() {
 
     },
-    created(){
-      this._getGoodsCart();
-
-
+    created() {
+      setTimeout(() => {
+        this._getGoodsCart();
+      }, 2000);
     },
     methods: {
       //获得购物车数据
@@ -177,10 +185,10 @@
 
       },
 
-       //点击删除显示模态框
+      //点击删除显示模态框
       deleteGoods(index) {
         this.showHideConfirm = false;
-        this.index=index
+        this.index = index
       },
 
       //商品数量相加
@@ -318,11 +326,11 @@
       followGoods() {
         alert("移入成功")
       },
-      gotoJS(){
+      gotoJS() {
         this.$router.push({path: "/BuyProduct"})
       }
 
-  }
+    }
 
 
   }
@@ -339,7 +347,7 @@
       align-items: center;
       margin: 20px auto;
       background-color: @color-F0;
-      border-bottom: 5px solid@color-white;
+      border-bottom: 5px solid @color-white;
       .goodsList-templatel-left {
         flex: 1;
         margin-right: 10px;
@@ -469,5 +477,14 @@
       font-size: @font-size-large;
     }
   }
+
+  .loading-container {
+    position: absolute;
+    max-width: 640px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
 </style>
 

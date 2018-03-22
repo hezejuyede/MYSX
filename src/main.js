@@ -6,8 +6,8 @@ import './common/less/base.less'
 import axios from 'axios'
 import VueLazylord from 'vue-lazyload'
 import VDistpicker from 'v-distpicker'
+import Croppa from 'vue-croppa'
 
-import './api/VeeValidate'
 
 
 
@@ -18,7 +18,7 @@ Vue.use(VueLazylord, {
   loading: require('./common/image/logo.png')
 });
 Vue.component('v-distpicker', VDistpicker);
-
+Vue.use(Croppa);
 
 
 /* eslint-disable no-new */

@@ -148,8 +148,8 @@
         if (value.length === 0) {
           this.username1ErrText = "用户名不能为空";
         }
-        else if (value.length < 4) {
-          this.username1ErrText = "用户名至少为4位";
+        else if (value.length < 3) {
+          this.username1ErrText = "用户名至少为3位";
         }
         else {
           this.username1ErrText = "";

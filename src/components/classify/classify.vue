@@ -90,17 +90,23 @@
 
       </section>
     </main>
-
-
+    <div class="loading-container" v-show="!leftLists.length">
+      <loading></loading>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import SearchNavbar from "../../bese/searchNavbar/seachNavbar.vue";
+  import Loading from '../../bese/loading/loading.vue'
   import axios from 'axios'
 
   export default {
-    components: {SearchNavbar},
+    components: {
+      SearchNavbar,
+      Loading,
+      leftLists: []
+    },
     name: 'classify',
     data() {
       return {
@@ -347,5 +353,11 @@
     }
   }
 
+  .loading-container {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 
 </style>

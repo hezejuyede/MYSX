@@ -43,9 +43,8 @@
       }
     },
     created() {
-      setTimeout(() => {
-        this._getBanner();
-      }, 4000);
+      this._getBanner();
+
     },
     methods: {
       _getBanner() {

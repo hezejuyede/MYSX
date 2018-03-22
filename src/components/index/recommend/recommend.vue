@@ -3,7 +3,7 @@
     <swiper :options="swiperOption1" ref="mySwiper">
       <swiper-slide v-for="(item,index) in recommend" :key="item.id">
         <img :src="item.img" class="bannerimg" style="width: 100%"
-             @click="showRecommend(index)">
+             @click="showRecommend(index,item.id,item.sindex)">
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
       <div class="swiper-scrollbar" slot="scrollbar"></div>
@@ -61,8 +61,8 @@
         })
           .catch((err)=>{console.log(err)})
       },
-      showRecommend(index) {
-        this.$router.push({path: '/GoodsDetails'})
+      showRecommend(index,id,sindex) {
+        this.$router.push({path: "/GoodsDetails/", query: {id: id, index: sindex}})
       },
     }
   }
