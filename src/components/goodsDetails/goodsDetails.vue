@@ -12,11 +12,13 @@
         </div>
       </div>
     </div>
+
+
     <div class="goodsDetails-center">
       <div class="goodsInfo" v-for="(item,index) in  goodsDetailsCenter">
         <div class="goodsInfo-img" v-show="index==0&&index==num">
           <div class="goodsInfo-img-top">
-            <img :src="goodsImg" alt="" class="">
+            <img :src="goodsImg" alt="" >
           </div>
           <div class="goodsInfo-img-center">
             <div class="center-title">
@@ -33,9 +35,9 @@
             </div>
             <div class="center-address">
               <span>送至:</span>
-              &nbsp;<span>山东</span>
-              &nbsp;<span>济宁</span>
-              &nbsp;<i class="iconfont icon-dizhi"></i>
+              <span>{{isprovince}}</span>&nbsp;
+              <span>{{iscity}}</span>&nbsp;
+              &nbsp;<i class="iconfont icon-dizhi" @click="changeAddress"></i>
             </div>
           </div>
         </div>
@@ -107,6 +109,8 @@
         </div>
       </div>
     </div>
+
+
     <div class="goodsDetails-bottom">
       <div class="bottom-kf">
         <i class="iconfont icon-kefu">客服</i>
@@ -119,6 +123,9 @@
         立即购买
       </div>
     </div>
+
+
+
     <modal
       :msg="message"
       :isHideModal="HideModal">
@@ -131,9 +138,10 @@
   import Navheader from "../../bese/navheader/navheader.vue";
   import SearchNavbar from "../../bese/searchNavbar/seachNavbar.vue";
   import Modal from '../../bese/modal/modal.vue';
+  import {addCart} from '../../api/config'
+
 
   import axios from 'axios';
-
 
   export default {
     name: 'goodsDetails',
@@ -158,7 +166,14 @@
         goodsImg: '',
         title: "",
         price: "",
-        gg: ""
+        img:'',
+        gg: "",
+
+
+
+        isprovince: '北京',
+        iscity: '西城区',
+
       }
 
     },
@@ -199,6 +214,14 @@
             console.log(err)
           })
       },
+      onSelected(data) {
+        this.isprovince = data.province.value;
+        this.iscity = data.city.value;
+        this.isarea = data.area.value;
+      },
+      changeAddress(){
+
+      },
       tab(index) {
         this.num = index;
       },
@@ -208,11 +231,19 @@
       collection() {
         if (this.$refs.Collection.className === 'iconfont icon-heart') {
           this.$refs.Collection.className = 'iconfont icon-heart red'
-        } else if (this.$refs.Collection.className === 'iconfont icon-heart red') {
+        }
+        else if (this.$refs.Collection.className === 'iconfont icon-heart red') {
           this.$refs.Collection.className = 'iconfont icon-heart '
         }
       },
       addCart() {
+        let title = this.title;
+        let price = this.price;
+        let id = this.$route.query.id;
+        let index = this.$route.query.index;
+        let img  = this.goodsImg;
+        addCart(index, img, title, price, id);
+
         this.message = "已经加入购物车";
         this.HideModal = false;
         const that = this;
@@ -227,8 +258,6 @@
       nowBuy() {
         alert('hh')
       }
-
-
     },
 
   }
@@ -269,6 +298,7 @@
           height: 375px;
           img {
             width: 100%;
+            height: 375px;
           }
         }
         .goodsInfo-img-center {

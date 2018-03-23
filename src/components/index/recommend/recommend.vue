@@ -55,7 +55,7 @@
     },
     methods: {
       _getrecommend() {
-        axios.get('api/recommend')
+        axios.get('/api/recommend')
           .then((res) => {
           this.recommend = res.data;
         })

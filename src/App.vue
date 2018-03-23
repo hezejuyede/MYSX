@@ -5,6 +5,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import "./common/icon/iconfont.css";
   export default {
     name: 'app'
 
@@ -13,6 +14,9 @@
 
 <style lang="less" rel="stylesheet/less">
   @import "./common/less/base";
+
+
+
 
 
 

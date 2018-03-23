@@ -196,7 +196,7 @@
     },
     methods: {
       _getGoodsList() {
-        axios.get('api/goodsList')
+        axios.get('/api/goodsList')
           .then((res) => {
               this.crad = res.data[0].goodsImg,
               this.shrimps = res.data[4].goodsImg,

@@ -12,6 +12,7 @@ import Croppa from 'vue-croppa'
 
 
 
+
 Vue.config.productionTip = false;
 Vue.use(VueAwesomeSwiper);
 Vue.use(VueLazylord, {

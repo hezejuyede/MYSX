@@ -116,7 +116,7 @@
     },
     methods: {
       _getYCJX() {
-        axios.get('api/tuijian')
+        axios.get('/api/tuijian')
           .then((res) => {
             this.YCJX = res.data;
           })
@@ -125,7 +125,7 @@
           })
       },
       _getWeekHotSell() {
-        axios.get('api/hotSell')
+        axios.get('/api/hotSell')
           .then((res) => {
             this.weekHotSell = res.data;
           })
@@ -134,7 +134,7 @@
           })
       },
       _getchujian() {
-        axios.get('api/chujian')
+        axios.get('/api/chujian')
           .then((res) => {
             this.chujian = res.data;
           })
