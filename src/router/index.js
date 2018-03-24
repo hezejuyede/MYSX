@@ -18,7 +18,6 @@ import ChangeAddress from '../components/buyProduct/changeAddress/changeAddress.
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
   routes: [
     {
       path: '/',
