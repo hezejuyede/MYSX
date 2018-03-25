@@ -35,9 +35,9 @@
             </div>
             <div class="center-address">
               <span>送至:</span>
-              <span>{{isprovince}}</span>&nbsp;
-              <span>{{iscity}}</span>&nbsp;
-              &nbsp;<i class="iconfont icon-dizhi" @click="changeAddress"></i>
+              &nbsp;<span>{{province}}</span>&nbsp;
+             <span>{{city}}</span>&nbsp;
+              &nbsp;<i class="iconfont icon-dizhi"></i>
             </div>
           </div>
         </div>
@@ -130,6 +130,9 @@
       :msg="message"
       :isHideModal="HideModal">
     </modal>
+    <div class="loading-container" v-show="goodsImg.length===0">
+      <loading></loading>
+    </div>
   </div>
 </template>
 
@@ -138,7 +141,8 @@
   import Navheader from "../../bese/navheader/navheader.vue";
   import SearchNavbar from "../../bese/searchNavbar/seachNavbar.vue";
   import Modal from '../../bese/modal/modal.vue';
-  import {addCart} from '../../api/config'
+  import {addCart} from '../../api/config';
+  import Loading from '../../bese/loading/loading.vue';
 
 
   import axios from 'axios';
@@ -148,7 +152,8 @@
     components: {
       SearchNavbar,
       Navheader,
-      Modal
+      Modal,
+      Loading
     },
     data() {
       return {
@@ -158,21 +163,27 @@
         goodsInfoGeBottom: [{}, {}, {}],
         num: 0,
         num1: 0,
+
+
         message: "",
         HideModal: true,
+
+
+
         goodsInfo: [],
         productImg: [],
         details: [],
         goodsImg: '',
         title: "",
         price: "",
+        number:'',
         img:'',
         gg: "",
 
 
 
-        isprovince: '北京',
-        iscity: '西城区',
+        province: '',
+        city:''
 
       }
 
@@ -183,7 +194,10 @@
       }
     },
     created() {
-      this._getGoodsDetails();
+      setTimeout(() => {
+        this._getGoodsDetails();
+      }, 2000);
+      this._getIPAddress();
 
     },
     methods: {
@@ -195,46 +209,163 @@
           }
         })
           .then((res) => {
-
             this.goodsImg = res.data.img;
             this.title = res.data.title;
             this.price = res.data.price;
             this.gg = res.data.number;
             this.productImg = res.data.productImg;
             this.details = res.data.details;
-
-
-
-
-
-
-
           })
           .catch((err) => {
             console.log(err)
           })
       },
-      onSelected(data) {
-        this.isprovince = data.province.value;
-        this.iscity = data.city.value;
-        this.isarea = data.area.value;
+      _getIPAddress() {
+        let province = remote_ip_info.province;
+        let city = remote_ip_info.city;
+        this.province = province;
+        this.city = city;
       },
-      changeAddress(){
 
-      },
+
       tab(index) {
         this.num = index;
       },
       tab1(index) {
         this.num1 = index;
       },
+
+
       collection() {
-        if (this.$refs.Collection.className === 'iconfont icon-heart') {
-          this.$refs.Collection.className = 'iconfont icon-heart red'
+        let name = this.$refs.Collection;
+        if (name.className === 'iconfont icon-heart') {
+          if (sessionStorage.getItem("userInfo") === null) {
+            this.message = "登录才能收藏";
+            this.HideModal = false;
+            const that = this;
+
+            function a() {
+              that.message = "";
+              that.HideModal = true;
+            }
+
+            setTimeout(a, 2000);
+          }
+          else {
+            name.className = 'iconfont icon-heart red';
+            let title = this.title;
+            let price = this.price;
+            let id = this.$route.query.id;
+            let index = this.$route.query.index;
+            let img = this.goodsImg;
+            let num = 1;
+
+            let FollowGoods =
+              {
+                img: img,
+                title: title,
+                goodsPrice: price,
+                num: num,
+                id: id
+
+              };
+            axios.post("/api/setFollowGoods", {
+              FollowGoods: FollowGoods
+            })
+              .then((res) => {
+                if (res.data === "1") {
+                  this.message = "收藏成功";
+                  this.HideModal = false;
+                  const that = this;
+
+                  function a() {
+                    that.message = "";
+                    that.HideModal = true;
+                  }
+
+                  setTimeout(a, 2000);
+                }
+                else if (res.data === "-1") {
+                  this.message = "收藏失败";
+                  this.HideModal = false;
+                  const that = this;
+
+                  function b() {
+                    that.message = "";
+                    that.HideModal = true;
+                    that.goodsCart.splice(index, 1);
+                  }
+
+                  setTimeout(b, 2000);
+                }
+                else if (res.data === "-2") {
+                  this.message = "登录才能收藏";
+                  this.HideModal = false;
+                  const that = this;
+
+                  function c() {
+                    that.message = "";
+                    that.HideModal = true;
+                  }
+
+                  setTimeout(c, 2000);
+                }
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+          }
+
         }
-        else if (this.$refs.Collection.className === 'iconfont icon-heart red') {
-          this.$refs.Collection.className = 'iconfont icon-heart '
+        else if (name.className === 'iconfont icon-heart red') {
+          if (sessionStorage.getItem("userInfo") === null) {
+            this.message = "登录才能收藏";
+            this.HideModal = false;
+            const that = this;
+
+            function a() {
+              that.message = "";
+              that.HideModal = true;
+            }
+
+            setTimeout(a, 2000);
+          }
+          else {
+            name.className = 'iconfont icon-heart ';
+            axios.post("/api/DetailsDeleteFollowGoods")
+              .then((res) => {
+                if (res.data === "1") {
+                  this.message = "取消收藏成功";
+                  this.HideModal = false;
+                  const that = this;
+
+                  function a() {
+                    that.message = "";
+                    that.HideModal = true;
+                  }
+
+                  setTimeout(a, 2000);
+                }
+                else if (res.data === "-1") {
+                  this.message = "已经加入购物车";
+                  this.HideModal = false;
+                  const that = this;
+
+                  function b() {
+                    that.message = "";
+                    that.HideModal = true
+                  }
+
+                  setTimeout(b, 2000);
+                }
+              })
+              .catch((err) => {
+                console.log(err)
+
+              });
+          }
         }
+
       },
       addCart() {
         let title = this.title;
@@ -470,6 +601,15 @@
       font-size: @font-size-medium-x;
     }
   }
+
+  .loading-container {
+    position: absolute;
+    max-width: 640px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
 
 
 </style>

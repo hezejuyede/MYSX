@@ -23,8 +23,8 @@
     text-align: center;
     .desc {
       line-height: 20px;
-      font-size: @font-size-small;
-      color: @color-text-l
+      font-size: @font-size-large;
+      color: @color-green;
     }
   }
 

@@ -22,7 +22,7 @@
               <p class="right-top-title">{{item.title}}</p>
             </div>
             <div class="right-center">
-              <span class="right-center-price">价格：￥{{goodsPrice}}</span>
+              <span class="right-center-price">价格：￥{{item.price}}</span>
             </div>
             <div class="right-bottom">
               <div class="right-bottom-addMinus">
@@ -33,7 +33,7 @@
               <div>
                 <span
                   class="follow"
-                  @click="followGoods(index,item.img,item.title,item.num)">
+                  @click="followGoods(index,item.img,item.title,item.price,item.num,item.id)">
                    移到收藏
                 </span>
                 <span class="delete" @click="deleteGoods(index)">删除</span>
@@ -381,45 +381,46 @@
       oneChange(index) {
         this.oneSelect = true;
         this.allSelect = false;
-        let numbier = 0;
-        let price = 0;
+
         const icon = this.$refs.xuanze;
         const allicon = this.$refs.allChange;
 
         if (this.$refs.xuanze[index].className === 'iconfont icon-xuanze') {
-          this.$refs.xuanze[index].className = 'iconfont icon-xuanze1'
-          for (let i = 0; i < icon.length; i++) {
-            if (icon[i].className === 'iconfont icon-xuanze') {
-              this.$refs.allChange.className = 'iconfont icon-xuanze';
-              if (icon[i].className === 'iconfont icon-xuanze1'){
-                this.$refs.allChange.className = 'iconfont icon-xuanze1'
-              }
+          this.$refs.xuanze[index].className = 'iconfont icon-xuanze1';
+          let price = this.goodsPrice
+          console.log(price)
 
-
-            }
-            else if (icon[i].className === 'iconfont icon-xuanze1') {
-              this.$refs.allChange.className = 'iconfont icon-xuanze1'
-            }
-          }
         }
         else if (this.$refs.xuanze[index].className === 'iconfont icon-xuanze1') {
-          this.$refs.xuanze[index].className = 'iconfont icon-xuanze'
-          for (let i = 0; i < icon.length; i++) {
-            if (icon[i].className === 'iconfont icon-xuanze') {
-              this.$refs.allChange.className = 'iconfont icon-xuanze';
-              if (icon[i].className === 'iconfont icon-xuanze1'){
-                this.$refs.allChange.className = 'iconfont icon-xuanze1'
-              }
-
-
-            }
-            else if (icon[i].className === 'iconfont icon-xuanze1') {
-              this.$refs.allChange.className = 'iconfont icon-xuanze1'
-            }
-          }
+          this.$refs.xuanze[index].className = 'iconfont icon-xuanze';
         }
 
 
+
+
+
+        /*for (let i = 0; i < icon.length; i++) {
+                  if (icon[i].className === 'iconfont icon-xuanze') {
+                    this.$refs.allChange.className = 'iconfont icon-xuanze';
+
+                  }
+                  else if (icon[i].className === 'iconfont icon-xuanze1') {
+                    this.$refs.allChange.className = 'iconfont icon-xuanze1'
+                  }
+                }*/
+        /* for (let i = 0; i < icon.length; i++) {
+                    if (icon[i].className === 'iconfont icon-xuanze') {
+                      this.$refs.allChange.className = 'iconfont icon-xuanze';
+                      if (icon[i].className === 'iconfont icon-xuanze1'){
+                        this.$refs.allChange.className = 'iconfont icon-xuanze1'
+                      }
+
+
+                    }
+                    else if (icon[i].className === 'iconfont icon-xuanze1') {
+                      this.$refs.allChange.className = 'iconfont icon-xuanze1'
+                    }
+                  }*/
 
       },
 
@@ -449,7 +450,7 @@
       },
 
       //收藏
-      followGoods(index, img, title, num) {
+      followGoods(index, img, title,price, num,id) {
         if (sessionStorage.getItem("userInfo") === null) {
           this.message = "登录才能收藏";
           this.HideModal = false;
@@ -495,8 +496,9 @@
             {
               img: img,
               title: title,
-              goodsPrice: this.goodsPrice,
-              num: num
+              goodsPrice: price,
+              num: num,
+              id:id
 
             };
           axios.post("/api/setFollowGoods", {
@@ -730,6 +732,7 @@
     width: 100%;
     top: 50%;
     transform: translateY(-50%);
+
   }
 
 </style>

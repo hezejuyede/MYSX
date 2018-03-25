@@ -47,11 +47,10 @@
                   </div>
                   <div class="scTemplate-goods" @click='goToGoods(index)'>
                     <p class="title-text">{{item.title}}</p>
-                    <p class="">价格：￥{{item.price}}</p>
-                    <p class="">数量：{{item.number}}</p>
+                    <p class="">价格：￥{{item.goodsPrice}}</p>
+                    <p class="">数量：{{item.num}}</p>
                   </div>
                   <div class="scTemplate-cz">
-                    <p class="" @click="addCart(index)">加入购物车</p>
                     <p class="" @click="deleteGoods(index)">移除收藏</p>
                   </div>
                 </div>
@@ -139,6 +138,10 @@
       <div class="loading-container" v-show="ye.length===0">
         <loading></loading>
       </div>
+      <modal
+        :msg="message"
+        :isHideModal="HideModal">
+      </modal>
     </div>
   </div>
 
@@ -149,9 +152,12 @@
   import Loading from '../../bese/loading/loading.vue';
   import SzUserInfo from './szUserInfo/szUserInfo.vue'
   import axios from 'axios';
+  import Modal from "../../bese/modal/modal.vue";
+  import {addCart} from '../../api/config'
 
   export default {
     components: {
+      Modal,
       SearchNavbar,
       Loading,
       SzUserInfo
@@ -159,6 +165,8 @@
     name: 'userInfo',
     data() {
       return {
+        message: "",
+        HideModal: true,
         navBar: [
           {icon: "iconfont icon-wujiaoxing", text: "收藏"},
           {icon: "iconfont icon-yijingpinglun", text: "评论"},
@@ -184,9 +192,7 @@
         info: [],
         ye: '',
 
-        isSzUserInfo:true
-
-
+        isSzUserInfo:true,
 
 
 
@@ -216,9 +222,10 @@
         if (this.login === '1') {
           axios.all([
             axios.post('/api/userOrderPJ'),
-            axios.post('/api/userBalance')
+            axios.post('/api/userBalance'),
+            axios.post('/api/getFollowGoods')
           ])
-            .then(axios.spread((OrderPJ, Balance) => {
+            .then(axios.spread((OrderPJ, Balance,FollowGoods) => {
               if (OrderPJ.data.length > 0) {
                 let pl = OrderPJ.data;
                 let ypl = [];
@@ -240,7 +247,8 @@
                   this.wplTime = wpl[0].orderTime;
                 }
               }
-              this.ye = Balance.data
+              this.ye = Balance.data;
+              this.collect=FollowGoods.data;
             }))
             .catch((err) => {
               console.log(err)
@@ -265,20 +273,41 @@
       goToGoods(index) {
         console.log(index)
       },
-
-
-
-
-
-
-
-      addCart(index) {
-        console.log(index)
-
-      },
-
       deleteGoods(index) {
-        this.collect.splice(index, 1);
+        axios.post("/api/deleteFollowGoods", {
+          index: index
+        })
+          .then((res) => {
+            if (res.data === "1") {
+              this.message = "删除成功";
+              this.HideModal = false;
+              const that = this;
+
+              function a() {
+                that.message = "";
+                that.HideModal = true;
+                that.collect.splice(index,1)
+              }
+
+              setTimeout(a, 2000);
+            }
+            else if (res.data === "-1") {
+              this.message = "已经加入购物车";
+              this.HideModal = false;
+              const that = this;
+
+              function b() {
+                that.message = "";
+                that.HideModal = true
+              }
+
+              setTimeout(b, 2000);
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+
+          });
       },
 
       gotoLogin() {
@@ -299,6 +328,9 @@
   @import "../../common/less/base";
 
   .buyProductIndex {
+    width: 100%;
+    height: 100%;
+
     .noLogin {
       width: 100%;
       height: 100%;

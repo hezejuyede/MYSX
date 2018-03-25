@@ -104,10 +104,12 @@
       <h4>鸭产品</h4>
       <div v-for="(item,index) in ducks" class="goodslist">
         <div class="clearfix goodslistOne">
-          <img v-lazy="item.img" width="100%" @click="lookDuckGoods(index)">
+          <img v-lazy="item.img"
+               width="100%"
+               @click="lookDuckGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -292,12 +294,13 @@
           float: left;
           margin-top: 10px;
           .goods-title {
-            color: @color-dialog-background;
-            font-size: @font-size-medium-x;
+            font-size: @font-size-large;
+            margin: 10px auto;
+            color: @color-green;
           }
           .addCart {
             width: 90%;
-            margin: 0 auto;
+            margin: 20px auto;
             border: 1px solid @color-theme;
             display: flex;
             align-items: center;
@@ -329,8 +332,6 @@
         color: @color-white;
         border-radius: 15%;
       }
-
     }
-
   }
 </style>
