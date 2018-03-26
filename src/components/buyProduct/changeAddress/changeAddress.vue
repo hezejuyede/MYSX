@@ -1,49 +1,52 @@
 <template>
-  <div id="changeAddress">
-    <div class="changeAddress-top">
-      <i class="iconfont icon-left-trangle" @click="goBack"></i>
-      <span>选择收货地址</span>
-      <span class="manageAddress" @click="manageAddress">管理</span>
-    </div>
-    <div class="changeAddress-bottom">
-      <div class="changeAddress-bottom-template" v-for="(item,index) in addressList">
-        <div class="changeAddress-bottom-template-top">
-          {{item.name}}{{item.phone}}
-          <span class="szmr" @click="szmr(index)">设为默认</span>
-        </div>
-        <div class="changeAddress-bottom-template-bottom">
-          {{item.citys}}{{item.cityDetails}}
+  <div :class="{Address:isAddress}">
+    <div id="changeAddress">
+      <div class="changeAddress-top">
+        <i class="iconfont icon-left-trangle" @click="goBack"></i>
+        <span>选择收货地址</span>
+        <span class="manageAddress" @click="manageAddress">管理</span>
+      </div>
+      <div class="changeAddress-bottom">
+        <div class="changeAddress-bottom-template" v-for="(item,index) in addressList">
+          <div class="changeAddress-bottom-template-top">
+            {{item.name}}{{item.phone}}
+            <span class="szmr" @click="szmr(index)">设为默认</span>
+          </div>
+          <div class="changeAddress-bottom-template-bottom">
+            {{item.citys}}{{item.cityDetails}}
 
-          <i class="iconfont icon-bianji"
-             @click="updateAddress(index,item.name,item.phone,item.citys,item.cityDetails,)"></i>
-          <i class="iconfont icon-shanchu" @click="deleteAddress(index)"></i>
+            <i class="iconfont icon-bianji"
+               @click="updateAddress(index,item.name,item.phone,item.citys,item.cityDetails,)"></i>
+            <i class="iconfont icon-shanchu" @click="deleteAddress(index)"></i>
+          </div>
         </div>
       </div>
+      <add
+        @showHideAdd="showHideAdd"
+        :cites="cites"
+        :isCitySelect="isCitySelect"></add>
+      <update-address
+        @showHideUpdateAdd="showHideUpdateAdd"
+        :isUpdateCitySelect="isUpdateCitySelect"
+        :upindex="index"
+        :upname='name'
+        :upphone='phone'
+        :upcitys='citys'
+        :upcityDetails='cityDetails'>
+      </update-address>
+      <modal
+        :msg="message"
+        :isHideModal="HideModal">
+      </modal>
+
+      <div class="newAddress">
+        <span @click="addAddress">新增收货地址</span>
+      </div>
+
+
     </div>
-    <add
-      @showHideAdd="showHideAdd"
-      :cites="cites"
-      :isCitySelect="isCitySelect"></add>
-    <update-address
-      @showHideUpdateAdd="showHideUpdateAdd"
-      :isUpdateCitySelect="isUpdateCitySelect"
-      :upindex="index"
-      :upname='name'
-      :upphone='phone'
-      :upcitys='citys'
-      :upcityDetails='cityDetails'>
-    </update-address>
-    <modal
-      :msg="message"
-      :isHideModal="HideModal">
-    </modal>
-
-    <div class="newAddress">
-      <span @click="addAddress">新增收货地址</span>
-    </div>
-
-
   </div>
+
 </template>
 
 <script type="text/ecmascript-6">
@@ -53,9 +56,6 @@
   import Modal from '../../../bese/modal/modal.vue'
 
 
-
-
-
   export default {
     components: {
       Add,
@@ -63,7 +63,7 @@
       UpdateAddress
     },
     name: 'changeAddress',
-
+    props: ["isAddress","showHideAddress"],
     data() {
       return {
         addressList: [],
@@ -75,21 +75,18 @@
         HideModal: true,
 
 
-        isUpdateCitySelect:true,
+        isUpdateCitySelect: true,
         index: '',
         name: '',
         phone: '',
         citys: '',
-        cityDetails:''
+        cityDetails: ''
       }
     },
     created() {
-      this._getUserInfo();
       this._getAddress();
     },
     methods: {
-      _getUserInfo() {
-      },
 
       _getAddress() {
         axios.post("/api/getUserAddressList")
@@ -118,12 +115,11 @@
         this.cityDetails = cityDetails;
 
 
-
       },
 
       deleteAddress(index) {
-        axios.post("/api/deleteUserAddressList",{
-          index:index
+        axios.post("/api/deleteUserAddressList", {
+          index: index
         })
           .then((res) => {
             if (res.data === "1") {
@@ -134,7 +130,7 @@
               function a() {
                 that.message = "";
                 that.HideModal = true;
-                window.location.assign("/ChangeAddress")
+                window.location.reload();
               }
 
               setTimeout(a, 2000);
@@ -145,7 +141,8 @@
       },
 
       goBack() {
-        this.$router.push({path: "/BuyProduct"})
+        this.isCitySelect1 = true;
+        this.$emit("showHideAddress", this.isCitySelect1)
       },
 
       manageAddress() {
@@ -183,21 +180,20 @@
               setTimeout(b, 2000);
             }
           })
-          .catch((err)=>{
+          .catch((err) => {
             console.log(err)
           })
 
       },
 
 
-      showHideAdd(ev){
+      showHideAdd(ev) {
         this.isCitySelect = ev
       },
 
-      showHideUpdateAdd(ev){
+      showHideUpdateAdd(ev) {
         this.isUpdateCitySelect = ev
       }
-
 
 
     }
@@ -205,9 +201,18 @@
 </script>
 <style scoped lang="less" rel="stylesheet/less">
   @import "../../../common/less/base";
+  .Address{
+    display: none;
+  }
 
   #changeAddress {
-    background-color: @color-F0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background-color: @color-white;
     .changeAddress-top {
       height: 50px;
       line-height: 50px;

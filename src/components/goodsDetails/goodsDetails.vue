@@ -6,8 +6,7 @@
       <div class="" v-for="(item,index) in goodsDetailsTop">
         <div
           :class="{'topBottom':index === num}"
-          @click="tab(index)"
-        >
+          @click="tab(index)">
           {{item.text}}
         </div>
       </div>
@@ -33,10 +32,20 @@
             <div class="center-gg">
               <span>库存数量：</span><span>{{gg}}件</span>
             </div>
+            <div class="center-number">
+              <div class="center-number-left">购买数量：</div>
+              <div class="center-number-right">
+                <span @click="minusNumber">-</span>
+                <span>{{number}}</span>
+                <span @click="addNumber">+</span>
+              </div>
+
+
+            </div>
             <div class="center-address">
               <span>送至:</span>
               &nbsp;<span>{{province}}</span>&nbsp;
-             <span>{{city}}</span>&nbsp;
+              <span>{{city}}</span>&nbsp;
               &nbsp;<i class="iconfont icon-dizhi"></i>
             </div>
           </div>
@@ -173,10 +182,11 @@
         goodsInfo: [],
         productImg: [],
         details: [],
+
         goodsImg: '',
         title: "",
         price: "",
-        number:'',
+        number:1,
         img:'',
         gg: "",
 
@@ -387,8 +397,30 @@
         setTimeout(a, 2000);
       },
       nowBuy() {
-        alert('hh')
+
+        this.$router.push({
+          path: "/BuyProduct/",
+          query: {
+            id: this.$route.query.id,
+            index: this.$route.query.index,
+            img: this.goodsImg,
+            title: this.title,
+            price: this.price,
+            number: this.number,
+          }
+        })
+      },
+      addNumber() {
+        this.number++
+      },
+      minusNumber() {
+        if (this.number > 1) {
+          this.number--
+        }
+
       }
+
+
     },
 
   }
@@ -424,7 +456,7 @@
   .goodsDetails-center {
     .goodsInfo {
       .goodsInfo-img {
-        height: 620px;
+        height: 650px;
         .goodsInfo-img-top {
           height: 375px;
           img {
@@ -457,6 +489,50 @@
             align-items: center;
             padding-left: 20px;
             font-size: @font-size-medium-x;
+
+          }
+          .center-number{
+            display: flex;
+            padding-left: 20px;
+
+            .center-number-left{
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: @font-size-medium-x;
+            }
+            .center-number-right{
+              width: 100px;
+              height: 25px;
+              display: flex;
+              align-items: center;
+              border-radius: 10%;
+              border: 1px solid@color-F0;
+              span:first-child{
+                flex: 3;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: @font-size-large-x;
+                background-color: @color-F0;
+              }
+              span:nth-child(2){
+                flex: 4;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: @font-size-large-x;
+
+              }
+              span:last-child{
+                flex: 3;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: @font-size-large-x;
+                background-color: @color-F0;
+              }
+            }
 
           }
           .center-address {

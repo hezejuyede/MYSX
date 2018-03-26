@@ -196,8 +196,7 @@
                 function a() {
                   that.message = "";
                   that.HideModal = true;
-
-                  window.location.assign("/ChangeAddress")
+                  window.location.reload();
 
                 }
 

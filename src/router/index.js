@@ -11,13 +11,14 @@ import UserInfo from '../components/userInfo/userInfo.vue'
 import Nearby from '../components/nearby/nearby.vue'
 import Search from '../components/search/search.vue'
 import BuyProduct from '../components/buyProduct/buyProduct.vue'
-import ChangeAddress from '../components/buyProduct/changeAddress/changeAddress.vue'
+
 
 
 
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -73,11 +74,6 @@ export default new Router({
       path: '/BuyProduct',
       name: 'BuyProduct',
       component: BuyProduct
-    },
-    {
-      path: '/ChangeAddress',
-      name: 'ChangeAddress',
-      component: ChangeAddress
     }
   ]
 })

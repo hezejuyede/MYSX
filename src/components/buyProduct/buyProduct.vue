@@ -1,5 +1,9 @@
 <template>
   <div class="buyProductIndex">
+    <change-address
+      @showHideAddress="showHideAddress"
+      :isAddress="isAddress">
+    </change-address>
     <div class="noLogin" v-if="login !=='1'">
       <img src="../../common/image/logo.png" alt="">
       <p>您好，登录才能购买</p>
@@ -21,7 +25,7 @@
             </div>
             <div class="template-info-info">
               <div class="template-info-info-price">总价:￥{{item.price}}</div>
-              <div class="template-info-info-number">数量：{{item.num}}件</div>
+              <div class="template-info-info-number">数量：{{item.number}}件</div>
             </div>
           </div>
         </div>
@@ -54,13 +58,24 @@
         <div class="buyProduct-bottom-right" @click="payment">确认</div>
       </div>
     </div>
+    <div class="loading-container" v-show="phone.length===0">
+      <loading></loading>
+    </div>
   </div>
 
 </template>
 
 <script type="text/ecmascript-6">
   import axios from 'axios'
+  import ChangeAddress from '../../components/buyProduct/changeAddress/changeAddress.vue';
+  import {getNowTime} from '../../api/config';
+  import Loading from '../../bese/loading/loading.vue'
+
   export default {
+    components: {
+      ChangeAddress,
+      Loading
+    },
     name: 'buyProduct',
     data() {
       return {
@@ -70,17 +85,46 @@
         phone:'',
         name:'',
         citys:'',
-        cityDetails:''
+        cityDetails:'',
+        isAddress:true,
+
 
       }
     },
     created(){
-      this._getUserInfo()
+    /*  this._getUserInfo()*/
 
-
+      this._getProduct()
     },
     methods: {
-      _getUserInfo() {
+      /*  _getUserInfo() {
+          if (sessionStorage.getItem("userInfo") === null) {
+            console.log("用户还没有登录")
+          }
+          else {
+            let UserInfo = sessionStorage.getItem("userInfo");
+            UserInfo = JSON.parse(UserInfo);
+            this.login = UserInfo.state;
+
+            axios.post("/api/MobileUserPayment")
+              .then((res) => {
+
+                let addressList = res.data.addressList;
+                let address  = res.data.addressMr;
+                this.shoppingCart = addressList.productlist;
+                this.totalPrice = addressList.totalAmount;
+                this.name = address.name;
+                this.phone = address.phone;
+                this.citys = address.citys;
+                this.cityDetails = address.cityDetails;
+
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+          }
+        },*/
+      _getProduct() {
         if (sessionStorage.getItem("userInfo") === null) {
           console.log("用户还没有登录")
         }
@@ -89,13 +133,20 @@
           UserInfo = JSON.parse(UserInfo);
           this.login = UserInfo.state;
 
+          let templete = {
+            "id": this.$route.query.id,
+            "index": this.$route.query.index,
+            "img": this.$route.query.img,
+            "title": this.$route.query.title,
+            "price": this.$route.query.price,
+            "number": this.$route.query.number,
+          };
+          this.shoppingCart.push(templete);
+          this.totalPrice = this.$route.query.price * this.$route.query.number;
           axios.post("/api/MobileUserPayment")
             .then((res) => {
-
               let addressList = res.data.addressList;
-              let address  = res.data.addressMr;
-              this.shoppingCart = addressList.productlist;
-              this.totalPrice = addressList.totalAmount;
+              let address = res.data.addressMr;
               this.name = address.name;
               this.phone = address.phone;
               this.citys = address.citys;
@@ -106,30 +157,46 @@
               console.log(err)
             })
         }
+
+
       },
-
-
-      gotoLogin(){
+      gotoLogin() {
         this.$router.push({path: "/Login"})
       },
       goBack() {
         this.$router.push({path: "/"})
       },
+
       changeAddress() {
-        this.$router.push({path: "/ChangeAddress"})
+        this.isAddress = false;
       },
+
+      showHideAddress(ev) {
+        this.isAddress = ev
+      },
+
       payment() {
-        alert("hahha")
-      }
+        //随机生成11位订单号
+        let Num = "";
+        for (let i = 0; i < 11; i++) {
+          Num += Math.floor(Math.random() * 10);
+        }
+        //获得当前日期
+        let time = getNowTime();
+        let orderInfo = {}
+
+
+      },
     }
   }
 </script>
 <style scoped lang="less" rel="stylesheet/less">
   @import "../../common/less/base";
-  .buyProductIndex{
+
+  .buyProductIndex {
     width: 100%;
     height: 100%;
-    .noLogin{
+    .noLogin {
       width: 100%;
       height: 100%;
       background-color: @color-F0;
@@ -138,16 +205,15 @@
       flex-direction: column;
       font-size: @font-size-large-xxx;
       justify-content: center;
-      img{
+      img {
         margin-bottom: 50px;
       }
-      p{
+      p {
         margin-bottom: 50px;
       }
     }
 
   }
-
 
   #buyProduct {
     background-color: @color-F0;
@@ -309,5 +375,11 @@
 
   }
 
-
+  .loading-container {
+    position: absolute;
+    max-width: 640px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 </style>
