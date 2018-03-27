@@ -2,9 +2,9 @@
   <div id="searchNavbar">
     <div class="searchNavbar-top">
       <div class="top-left">
-        <router-link to="/">
+        <p @click="$router.go(-1)">
           <i class="iconfont icon-left-trangle"></i>
-        </router-link>
+        </p>
       </div>
       <div class="top-center">
         <i class="iconfont icon-sousuo"></i>

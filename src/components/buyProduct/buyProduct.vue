@@ -11,7 +11,7 @@
     </div>
     <div id="buyProduct" v-if="login ==='1'">
       <div class="buyProduct-top">
-        <i class="iconfont icon-left-trangle" @click="goBack"></i>
+        <i class="iconfont icon-left-trangle" @click="$router.go(-1)"></i>
         <span>购买宝贝</span>
       </div>
       <div class="buyProduct-product">
@@ -61,6 +61,10 @@
     <div class="loading-container" v-show="phone.length===0">
       <loading></loading>
     </div>
+    <modal
+      :msg="message"
+      :isHideModal="HideModal">
+    </modal>
   </div>
 
 </template>
@@ -70,9 +74,11 @@
   import ChangeAddress from '../../components/buyProduct/changeAddress/changeAddress.vue';
   import {getNowTime} from '../../api/config';
   import Loading from '../../bese/loading/loading.vue'
+  import Modal from "../../bese/modal/modal.vue";
 
   export default {
     components: {
+      Modal,
       ChangeAddress,
       Loading
     },
@@ -82,11 +88,14 @@
         shoppingCart: [],
         totalPrice: 0,
         login:'',
+        username:'',
         phone:'',
         name:'',
         citys:'',
         cityDetails:'',
         isAddress:true,
+        message: "",
+        HideModal: true,
 
 
       }
@@ -132,8 +141,9 @@
           let UserInfo = sessionStorage.getItem("userInfo");
           UserInfo = JSON.parse(UserInfo);
           this.login = UserInfo.state;
+          this.username=UserInfo.username;
 
-          let templete = {
+          let template = {
             "id": this.$route.query.id,
             "index": this.$route.query.index,
             "img": this.$route.query.img,
@@ -141,7 +151,11 @@
             "price": this.$route.query.price,
             "number": this.$route.query.number,
           };
-          this.shoppingCart.push(templete);
+
+
+
+
+          this.shoppingCart.push(template);
           this.totalPrice = this.$route.query.price * this.$route.query.number;
           axios.post("/api/MobileUserPayment")
             .then((res) => {
@@ -163,9 +177,6 @@
       gotoLogin() {
         this.$router.push({path: "/Login"})
       },
-      goBack() {
-        this.$router.push({path: "/"})
-      },
 
       changeAddress() {
         this.isAddress = false;
@@ -183,9 +194,38 @@
         }
         //获得当前日期
         let time = getNowTime();
-        let orderInfo = {}
+        let orderInfo = {
+          "orderNumber": Num,
+          "time": time,
+          "name": this.username,
+          "phoneNumber": this.phone,
+          "address": this.citys + this.cityDetails,
+          "orderState": "未付款",
+          "orderStyle": "在线支付",
+          "orderAmount": this.totalPrice,
+          "orderDetail":  this.shoppingCart
+        };
+        axios.post("/api/setUserOrderState", {
+          orderInfo: orderInfo
+        })
+          .then((res) => {
+            if (res.data === "1") {
+              this.message = "订单提交成功";
+              this.HideModal = false;
+              const that = this;
 
+              function a() {
+                that.message = "";
+                that.HideModal = true;
+                that.$router.push({path: "/PayPage/", query: {Num: Num}})
+              }
 
+              setTimeout(a, 2000);
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       },
     }
   }
