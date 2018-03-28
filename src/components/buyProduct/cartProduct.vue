@@ -113,17 +113,17 @@
           let UserInfo = sessionStorage.getItem("userInfo");
           UserInfo = JSON.parse(UserInfo);
           this.login = UserInfo.state;
-          this.username=UserInfo.username;
-          let template = {
-            "id": this.$route.query.id,
-            "index": this.$route.query.index,
-            "img": this.$route.query.img,
-            "title": this.$route.query.title,
-            "price": this.$route.query.price,
-            "num": this.$route.query.number,
-          };
-          this.shoppingCart.push(template);
-          this.totalPrice = this.$route.query.price * this.$route.query.number;
+          this.username = UserInfo.username;
+          let orderProduct = this.$route.query.productList;
+          if (orderProduct[0].img !== undefined) {
+            orderProduct = JSON.stringify(orderProduct);
+            localStorage.setItem("orderProduct", orderProduct);
+          }
+          let OrderProduct = localStorage.getItem("orderProduct");
+          OrderProduct = JSON.parse(OrderProduct);
+          this.shoppingCart = OrderProduct;
+          this.totalPrice = this.$route.query.totalAmount;
+
           axios.post("/api/MobileUserPayment")
             .then((res) => {
               let addressList = res.data.addressList;

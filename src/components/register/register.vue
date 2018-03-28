@@ -285,7 +285,7 @@
                 function a() {
                   that.message = "";
                   that.HideModal = true;
-                  window.location.assign("/Login")
+                  that.$router.push({path: "/Login"})
                 }
 
                 setTimeout(a, 2000);

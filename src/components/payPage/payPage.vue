@@ -19,7 +19,7 @@
             <div class="order-template-right-top">
               <span class="">￥{{item.price}}</span>
               <i class="iconfont icon-guanbi"></i>
-              <span>{{item.number}}个</span>
+              <span>{{item.num}}个</span>
             </div>
             <div class="order-template-right-bottom">{{item.title}}</div>
           </div>
@@ -133,6 +133,7 @@
       width: 100%;
       height: 100%;
       background-color: @color-F0;
+      flex-direction: column;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -10,7 +10,7 @@
         <div class="changeAddress-bottom-template" v-for="(item,index) in addressList">
           <div class="changeAddress-bottom-template-top">
             {{item.name}}{{item.phone}}
-            <span class="szmr" @click="szmr(index)">设为默认</span>
+            <span class="szmr" @click="szmr(index)">选择改地址</span>
           </div>
           <div class="changeAddress-bottom-template-bottom">
             {{item.citys}}{{item.cityDetails}}
@@ -130,7 +130,7 @@
               function a() {
                 that.message = "";
                 that.HideModal = true;
-                window.location.reload();
+                that.$router.go(0)
               }
 
               setTimeout(a, 2000);
@@ -162,7 +162,7 @@
               function a() {
                 that.message = "";
                 that.HideModal = true;
-                window.location.assign("/ChangeAddress")
+                that.$router.go(0)
               }
 
               setTimeout(a, 2000);
@@ -175,6 +175,7 @@
               function b() {
                 that.message = "";
                 that.HideModal = true;
+                that.$router.go(0)
               }
 
               setTimeout(b, 2000);

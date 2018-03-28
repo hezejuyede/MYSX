@@ -129,9 +129,7 @@ export function addCart(index, img, title, price, id) {
     axios.post("/api/MobileUserAddProduct", {
       shoppingCart: shoppingCart
     })
-      .then((res) => {
-        console.log(res)
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log(err)
       })
@@ -148,9 +146,7 @@ export function getUserShoppingCart() {
   axios.post("/api/MobileUserAddProduct", {
     shoppingCart: shoppingCart
   })
-    .then((res) => {
-      console.log(res)
-    })
+    .then((res) => {})
     .catch((err) => {
       console.log(err)
     });

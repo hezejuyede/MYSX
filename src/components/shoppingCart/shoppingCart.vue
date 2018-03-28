@@ -12,7 +12,8 @@
       <section class="goodsList">
         <div class="goodsList-template" v-for="(item,index) in goodsCart">
           <div class="goodsList-templatel-left">
-            <i class="iconfont icon-xuanze1" @click="oneChange(index)" ref="xuanze"></i>
+            <i class="iconfont icon-xuanze1"
+               @click="oneChange(index,item.num,item.price)" ref="xuanze"></i>
           </div>
           <div class="goodsList-template-center">
             <img :src="item.img">
@@ -22,7 +23,7 @@
               <p class="right-top-title">{{item.title}}</p>
             </div>
             <div class="right-center">
-              <span class="right-center-price">价格：￥{{item.price}}</span>
+              <span class="right-center-price">价格：￥{{ goodsPrice}}</span>
             </div>
             <div class="right-bottom">
               <div class="right-bottom-addMinus">
@@ -123,17 +124,24 @@
         confirm: false,
         goodsCart: [],
 
-        goodsPrice: 0,
+        goodsPrice:0,
 
 
         allGoodsPrice: 0,
         allGoodsNumber: 0,
         allSelect : true,
+        allSelectState:false,
 
 
         oneSelect:false,
         oneGoodsPrice: 0,
         oneGoodsNumber: 0,
+
+        orderList:[]
+
+
+
+
       }
 
     },
@@ -285,6 +293,8 @@
 
       //商品数量相加
       addGoods(index) {
+        this.allSelect = true;
+        this.oneSelect = false;
         if (sessionStorage.getItem("userInfo") === null) {
           let id = this.goodsCart[index].id;
           let img = this.goodsCart[index].img;
@@ -320,6 +330,8 @@
 
       //商品数量减少
       minusGoods(index) {
+        this.allSelect = true;
+        this.oneSelect = false;
         if (this.goodsCart[index].num > 1) {
           let id = this.goodsCart[index].id;
           let ShoppingCart = localStorage.getItem("ShoppingCart");
@@ -378,51 +390,60 @@
       },
 
       //非全选商品
-      oneChange(index) {
+      oneChange(index, number, price) {
         this.oneSelect = true;
         this.allSelect = false;
 
         const icon = this.$refs.xuanze;
-        const allicon = this.$refs.allChange;
+        const allIcon = this.$refs.allChange;
 
-        if (this.$refs.xuanze[index].className === 'iconfont icon-xuanze') {
-          this.$refs.xuanze[index].className = 'iconfont icon-xuanze1';
-          let price = this.goodsPrice
-          console.log(price)
+        if (icon[index].className === 'iconfont icon-xuanze') {
+          icon[index].className = 'iconfont icon-xuanze1';
+          this.oneGoodsNumber -= number;
+          this.oneGoodsPrice -= price;
+          this.orderList.splice(index,1);
+          for (let i = 0; i < icon.length; i++) {
+            if (icon[i].className === "iconfont icon-xuanze1") {
+              allIcon.className = 'iconfont icon-xuanze1';
+              this.allSelectState= false;
+            }
+
+          }
+        }
+        else if (icon[index].className === 'iconfont icon-xuanze1') {
+          icon[index].className = 'iconfont icon-xuanze';
+
+          this.oneGoodsNumber += number;
+          this.oneGoodsPrice += price;
+          let shoppingCart = localStorage.getItem("ShoppingCart");
+          shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+          let orderState = shoppingCart.productlist[index];
+          this.orderList.push(orderState);
+
+          for (let i = 0; i < icon.length; i++) {
+            if (icon[i].className !== icon[0].className) {
+              allIcon.className = 'iconfont icon-xuanze1'
+            }
+            else {
+              for (let k = i; k > 0; k--) {
+                if (icon[i].className === icon[k].className) {
+                  allIcon.className = 'iconfont icon-xuanze';
+
+                }
+                else {
+                  allIcon.className = 'iconfont icon-xuanze1'
+
+                }
+
+              }
+
+            }
+          }
 
         }
-        else if (this.$refs.xuanze[index].className === 'iconfont icon-xuanze1') {
-          this.$refs.xuanze[index].className = 'iconfont icon-xuanze';
-        }
-
-
-
-
-
-        /*for (let i = 0; i < icon.length; i++) {
-                  if (icon[i].className === 'iconfont icon-xuanze') {
-                    this.$refs.allChange.className = 'iconfont icon-xuanze';
-
-                  }
-                  else if (icon[i].className === 'iconfont icon-xuanze1') {
-                    this.$refs.allChange.className = 'iconfont icon-xuanze1'
-                  }
-                }*/
-        /* for (let i = 0; i < icon.length; i++) {
-                    if (icon[i].className === 'iconfont icon-xuanze') {
-                      this.$refs.allChange.className = 'iconfont icon-xuanze';
-                      if (icon[i].className === 'iconfont icon-xuanze1'){
-                        this.$refs.allChange.className = 'iconfont icon-xuanze1'
-                      }
-
-
-                    }
-                    else if (icon[i].className === 'iconfont icon-xuanze1') {
-                      this.$refs.allChange.className = 'iconfont icon-xuanze1'
-                    }
-                  }*/
-
       },
+
+
 
 
       //全选商品
@@ -437,6 +458,9 @@
           }
           this.allSelect = true;
           this.oneSelect = false;
+          this.allSelectState = true;
+          this.oneGoodsNumber = this.allGoodsNumber;
+          this.oneGoodsPrice = this.allGoodsPrice;
 
         }
         else if (allChange.className === 'iconfont icon-xuanze') {
@@ -446,6 +470,9 @@
           }
           this.allSelect = false;
           this.oneSelect = true;
+          this.allSelectState = false;
+          this.oneGoodsNumber = 0;
+          this.oneGoodsPrice = 0;
         }
       },
 
@@ -551,7 +578,30 @@
       },
 
       gotoJS() {
-        this.$router.push({path: "/BuyProduct"})
+        if (this.allSelectState === true) {
+          let shoppingCart = localStorage.getItem("ShoppingCart");
+          shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+          let productList=shoppingCart.productlist;
+          let totalAmount =shoppingCart.totalAmount;
+          this.$router.push({
+            path: "/cartProduct/",
+            query: {
+              productList:productList,
+              totalAmount:totalAmount
+            }
+          })
+
+        }
+        else {
+
+          this.$router.push({
+            path: "/cartProduct/",
+            query: {
+              productList: this.orderList,
+              totalAmount: this.oneGoodsPrice
+            }
+          })
+        }
       }
 
     }
@@ -565,7 +615,7 @@
   .myShoppingCart {
     width: 100%;
     height: 100%;
-    .noShoppingCart{
+    .noShoppingCart {
       width: 100%;
       height: 100%;
       .noShoppingCart-bottom {
@@ -576,15 +626,13 @@
         flex-direction: column;
         justify-content: center;
         font-size: @font-size-large-xxxxx;
-        img{
+        img {
           margin-bottom: 50px;
         }
       }
     }
 
   }
-
-
 
   .goodsList {
     width: 95%;
@@ -604,6 +652,7 @@
         }
         .icon-xuanze {
           font-size: @font-size-large-x;
+          color: @color-green;
         }
       }
       .goodsList-template-center {
@@ -698,10 +747,12 @@
       .icon-xuanze1 {
         font-size: @font-size-large-x;
         margin-right: 5px;
+
       }
       .icon-xuanze {
         font-size: @font-size-large-x;
         margin-right: 5px;
+        color: @color-green;
       }
     }
     .cart-footer-center {

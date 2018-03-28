@@ -204,7 +204,7 @@
                   that.message = "";
                   that.HideModal = true;
 
-                  window.location.reload();
+                  that.$router.go(0)
 
                 }
 

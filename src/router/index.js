@@ -11,6 +11,7 @@ import UserInfo from '../components/userInfo/userInfo.vue'
 import Nearby from '../components/nearby/nearby.vue'
 import Search from '../components/search/search.vue'
 import BuyProduct from '../components/buyProduct/buyProduct.vue'
+import cartProduct from '../components/buyProduct/cartProduct.vue'
 import PayPage from '../components/payPage/payPage.vue'
 
 
@@ -75,6 +76,11 @@ export default new Router({
       path: '/BuyProduct',
       name: 'BuyProduct',
       component: BuyProduct
+    },
+    {
+      path: '/cartProduct',
+      name: 'cartProduct',
+      component: cartProduct
     }
     ,
     {
