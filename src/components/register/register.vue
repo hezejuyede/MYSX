@@ -326,6 +326,19 @@
               console.log(err)
             })
         }
+        else {
+          this.message = "信息填写不正确";
+          this.HideModal = false;
+          const that = this;
+
+          function a() {
+            that.message = "";
+            that.HideModal = true;
+            that.$router.push({path: "/Login"})
+          }
+
+          setTimeout(a, 2000);
+        }
 
 
       }

@@ -46,16 +46,16 @@
     data() {
       return {
         nearbyImg: [
-          {"img": require("../../common/image/banner/banner1.jpg")},
-          {"img": require("../../common/image/banner/banner2.jpg")},
-          {"img": require("../../common/image/banner/banner3.jpg")}
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/banner1.jpg"},
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/banner2.jpg"},
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/banner3.jpg"}
         ],
         ImgList:[
-          {"img": require("../../common/image/banner/list1.jpg")},
-          {"img": require("../../common/image/banner/list2.jpg")},
-          {"img": require("../../common/image/banner/list3.jpg")},
-          {"img": require("../../common/image/banner/list4.jpg")},
-          {"img": require("../../common/image/banner/list5.jpg")},
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list1.jpg"},
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list2.jpg"},
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list3.jpg"},
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list4.jpg"},
+          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list5.jpg"},
         ],
         swiperOption: {
           direction: "horizontal",
@@ -101,7 +101,7 @@
     .FoodsList {
       .FoodsList-top {
         height: 110px;
-        background: url("../../common/image/banner/top.jpg") no-repeat;
+        background: url("http://www.ilqiqi.top/images/mYc/nbi/banner/top.jpg") no-repeat;
         background-size: 100% 100%;
       }
       .FoodsList-list-img {

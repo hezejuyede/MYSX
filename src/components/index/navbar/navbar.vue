@@ -2,31 +2,31 @@
   <div class="yc-navbar">
     <ul>
       <li>
-        <router-link to="">
+        <router-link to="/NowRec">
           <i class="iconfont icon-xinpinbiaoqian"></i>
           <span>新品推荐</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
+        <router-link to="/weekSell">
           <i class="iconfont icon-remai"></i>
           <span>本周热卖</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
+        <router-link to="/YcJx">
           <i class="iconfont icon-jingxuan"></i>
           <span>亿成精选</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
+        <router-link to="/Discount">
           <i class="iconfont icon-dazhehuodong"></i>
           <span>打折生鲜</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
+        <router-link to="/XsMs">
           <i class="iconfont icon-miaosha1"></i>
           <span>限时秒杀</span>
         </router-link>
@@ -34,31 +34,31 @@
     </ul>
     <ul>
       <li>
-        <router-link to="">
+        <router-link to="/FreeEat">
           <i class="iconfont icon-mianfeishichi"></i>
           <span>免费试吃</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
-          <i class="iconfont icon-lingquyouhuiquan"></i>
-          <span>领优惠券</span>
+        <router-link to="/TsCy">
+          <i class="iconfont icon-tesefuwu"></i>
+          <span>特色菜肴</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
+        <router-link to="/myOrder">
           <i class="iconfont icon-order"></i>
           <span>查看订单</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
+        <router-link to="/LogisticsInfo">
           <i class="iconfont icon-wuliu"></i>
           <span>物流信息</span>
         </router-link>
       </li>
       <li>
-        <router-link to="">
+        <router-link to="/LxKf">
           <i class="iconfont icon-kefu1"></i>
           <span>联系客服</span>
         </router-link>
@@ -167,7 +167,7 @@
           margin: 20px auto;
 
         }
-        .icon-lingquyouhuiquan:before {
+        .icon-tesefuwu:before {
           display: block;
           width: 50px;
           height: 50px;

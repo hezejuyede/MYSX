@@ -57,10 +57,11 @@
           <span>￥{{totalPrice}}元</span></div>
         <div class="buyProduct-bottom-right" @click="payment">确认</div>
       </div>
+      <div class="loading-container" v-show="shoppingCart.length===0">
+        <loading></loading>
+      </div>
     </div>
-    <div class="loading-container" v-show="shoppingCart.length===0">
-      <loading></loading>
-    </div>
+
     <modal
       :msg="message"
       :isHideModal="HideModal">

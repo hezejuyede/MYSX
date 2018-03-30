@@ -73,9 +73,6 @@
         <div class="" @click="login">
           <span>登录</span>
         </div>
-        <div class="">
-          <span>一键登录</span>
-        </div>
       </section>
       <section class="clearfix speedRegiter">
         <div>
@@ -420,15 +417,6 @@
         font-size: @font-size-medium-x;
         background-color: @color-F0;
         color: @color-black;
-        margin: 10px auto;
-      }
-      div:last-child {
-        height: 50px;
-        text-align: center;
-        line-height: 50px;
-        border: 1px solid @color-red;
-        font-size: @font-size-medium-x;
-        color: @color-red;
         margin: 10px auto;
       }
     }

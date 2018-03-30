@@ -170,7 +170,7 @@
       position: relative;
       h3 {
         height: 28px;
-        background: url("../../../common/image/jx.png") no-repeat top center;
+        background: url("http://www.ilqiqi.top/images/mYc/nbi/jx.png") no-repeat top center;
         background-size: 60px;
       }
       .center-img {

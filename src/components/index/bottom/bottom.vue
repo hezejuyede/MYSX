@@ -59,7 +59,7 @@
       </div>
     </div>
     <div class="end">
-      <img src="../../../common/image/footer.jpg">
+      <img src="http://www.ilqiqi.top/images/mYc/nbi/footer.jpg">
       <router-link to="">查看更多</router-link>
     </div>
   </div>
@@ -100,7 +100,7 @@
         }
         div:nth-child(2) {
           height: 60px;
-          background: url("../../../common/image/jx.png") no-repeat center center;
+          background: url("http://www.ilqiqi.top/images/mYc/nbi/jx.png") no-repeat center center;
           background-size: 60%;
         }
       }

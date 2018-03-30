@@ -23,7 +23,7 @@
           <img v-lazy="item.img" width="100%" @click="lookShrimpsGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <img v-lazy="item.img" width="100%" @click="lookFishGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -51,7 +51,7 @@
           <img v-lazy="item.img" width="100%" @click="lookCowGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -65,7 +65,7 @@
           <img v-lazy="item.img" width="100%" @click="lookPigsGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -79,7 +79,7 @@
           <img v-lazy="item.img" width="100%" @click="lookSheepGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -93,7 +93,7 @@
           <img v-lazy="item.img" width="100%" @click="lookChichenGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -123,7 +123,7 @@
           <img v-lazy="item.img" width="100%" @click="lookNoodlesGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class=""@click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -137,7 +137,7 @@
           <img v-lazy="item.img" width="100%" @click="lookBolusGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>
@@ -151,7 +151,7 @@
           <img v-lazy="item.img" width="100%" @click="lookSeasoningGoods(index)">
           <p class="goods-title">{{item.title}}</p>
           <div class="addCart">
-            <p>{{item.price}}￥</p>
+            <p>￥{{item.price}}</p>
             <p class="" @click="addCart(index,item.img,item.title,item.price,item.id)">加入购物车</p>
           </div>
         </div>

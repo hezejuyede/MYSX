@@ -2,7 +2,7 @@
   <div class="buyProductIndex">
     <div class="noLogin" v-if="login !=='1'">
       <img src="../../common/image/logo.png" alt="">
-      <p>您好，登录才能购买</p>
+      <p>您好，登录才查看用户信息 </p>
       <p @click="gotoLogin">点击前往登录页</p>
     </div>
     <div id="userInfo" v-if="login ==='1'">
