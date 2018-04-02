@@ -18,20 +18,11 @@
 
           </div>
         </div>
-        <!-- <div class="price">
-           <div class="">按价格筛选</div>
-           <div class="" @click="yiyuan">1元-100元</div>
-           <div class="" @click="yibai">100元-200元</div>
-           <div class="" @click="liangbai">200元-300元</div>
-           <div class="" @click="sanbai">300元-400元</div>
-           <div class="" @click="sibai">400元-以上</div>
-         </div>-->
       </section>
       <section class="classify-right">
-        <div class=""
-             v-for="(item,index) in rightLists"
-             v-show=" index == num"
-        >
+
+        <div v-for="(item,index) in rightLists"
+             v-show=" index == num">
           <div class="classify-right-top">
             <div class="goodsImg">
               <img :src="item.img">
@@ -39,15 +30,12 @@
             <div class="goodsSort">
               <div class=""
                    @click="defaultGoods(index)"
-                   v-bind:class="{divActive:isDefaultGoods}"
-              >默认
+                   v-bind:class="{divActive:isDefaultGoods}">默认
               </div>
               <div class=""
-                   @click="price(index)"
-              >
+                   @click="price(index)">
                 <div class=""
-                     v-bind:class="{divActive:isPrice}"
-                >
+                     v-bind:class="{divActive:isPrice}">
                   <span>价格</span>
                 </div>
                 <div class="">
@@ -61,23 +49,24 @@
               </div>
               <div class=""
                    @click="salesVolume(index)"
-                   v-bind:class="{divActive:isSell}"
-              >销量
+                   v-bind:class="{divActive:isSell}">
+                销量
               </div>
               <div class=""
                    @click="screen(index)"
-                   v-bind:class="{divActive:isSaixuan}"
-              >筛选
+                   v-bind:class="{divActive:isSaixuan}">
+                筛选
               </div>
             </div>
           </div>
           <div class="classify-right-bottom">
-            <div
-              v-for="(item,index) in goodsList"
-              v-show=" index == num"
-            >
-              <div class="classify-right-bottom-template" v-for="item in goodsList[num]">
-                <img :src="item.img" class="template-img">
+            <div v-for="(item,index) in goodsList"
+                 v-show=" index == num">
+              <div class="classify-right-bottom-template"
+                   v-for="item in goodsList[num]">
+                <img
+                  @click="lookGoods(index,item.id,item.index)"
+                  :src="item.img" class="template-img">
                 <p class="template-title">{{item.title}}</p>
                 <p class="template-price">￥{{item.price}}元</p>
                 <p class="template-number">月销：{{item.number}}</p>
@@ -87,7 +76,6 @@
 
           </div>
         </div>
-
       </section>
     </main>
     <div class="loading-container" v-show="!leftLists.length">
@@ -104,8 +92,7 @@
   export default {
     components: {
       SearchNavbar,
-      Loading,
-      leftLists: []
+      Loading
     },
     name: 'classify',
     data() {
@@ -125,12 +112,12 @@
       }
     },
     created() {
-      this._getclassifyLeft();
-      this._getclassifyRight();
+      this._getClassifyLeft();
+      this._getClassifyRight();
     },
     methods: {
-      _getclassifyLeft() {
-        axios.get('/api/leftLists')
+      _getClassifyLeft() {
+        axios.get('/api/MLeftLists')
           .then((res) => {
             this.leftLists = res.data;
           }).catch((err) => {
@@ -138,8 +125,8 @@
         })
 
       },
-      _getclassifyRight() {
-        axios.get("/api/rightLists")
+      _getClassifyRight() {
+        axios.get("/api/MRightLists")
           .then((res) => {
             this.rightLists = res.data;
             this.rightLists.forEach((val, index, arr) => {
@@ -153,23 +140,9 @@
       tab(index) {
         this.num = index;
       },
-
-      yiyuan() {
-        alert("一元")
+      lookGoods(index, id, sindex) {
+        this.$router.push({path: "/GoodsDetails/", query: {id: id, index: sindex}})
       },
-      yibai() {
-        alert("一百元")
-      },
-      liangbai() {
-        alert("两百元")
-      },
-      sanbai() {
-        alert("三百元")
-      },
-      sibai() {
-        alert("四百元")
-      },
-
       defaultGoods(index) {
         this.goodsList[index].sort((a, b) => {
           return a.price - b.price

@@ -23,7 +23,7 @@
                 @focus="userNameFocus(username)"
                 v-model="username"
                 type="text"
-                placeholder="用户名/已验证手机"/>
+                placeholder="注册用户名"/>
             </div>
             <div class="userErrText">
               <span>{{userNameErrText}}</span>
@@ -88,7 +88,7 @@
     <footer class="clearfix login-footer">
       <div class="login-footer-top">
         <div class=""></div>
-        <div class="">其他登录方式</div>
+        <div class="">其他登录</div>
         <div class=""></div>
       </div>
       <div class="login-footer-center">
