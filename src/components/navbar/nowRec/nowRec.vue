@@ -86,39 +86,39 @@
         productList:[],
         productList1: [
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'帝王蟹',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/3.jpg',
+            "title":'面包蟹',
+            "price":'293',
             "id":'PXL',
-            "sindex":1
+            "sindex":2
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/1.jpg',
-            "title":'肉食鸡',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/3.jpg',
+            "title":'大鸡腿',
+            "price":'293',
             "id":'JXL',
-            "sindex":1
+            "sindex":2
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'整鸭',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/3.jpg',
+            "title":'大鸭腿',
             "price":'291',
             "id":'YXL',
-            "sindex":1
+            "sindex":2
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/1.jpg',
-            "title":'白虾',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/3.jpg',
+            "title":'黑虎虾',
+            "price":'293',
             "id":'DXL',
-            "sindex":1
+            "sindex":2
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/1.jpg',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/3.jpg',
             "title":'火锅丸',
-            "price":'291',
+            "price":'293',
             "id":'HGW',
-            "sindex":1
+            "sindex":2
           }
         ]
       }

@@ -17,7 +17,7 @@
       <span>购物车</span>
     </router-link>
     <router-link to="/UserInfo" >
-      <i class="iconfont icon-huiyuan"></i>
+      <i class="iconfont icon-iconfonticonfontwode1"></i>
       <span>我的</span>
     </router-link>
   </footer>
@@ -44,10 +44,11 @@
     position: fixed;
     bottom: 0;
     height: 60px;
-    background-color: @color-red;
+    background-color: @color-white;
     display: flex;
     align-items: center;
     z-index: 99;
+    border-top: 1px solid@color-background-dd;
     a {
       flex: 1;
       display: block;
@@ -56,21 +57,21 @@
       line-height: 30px;
       text-align: center;
       span {
-        color: @color-white;
+        color: @color-black;
         font-size: @font-size-medium-x;
       }
       i{
         display: block;
         margin-top: 2px;
         font-size: 180%;
-        color: @color-white;
+        color: @color-black;
       }
     }
 
   }
 
   .footerA {
-    background-color: @color-background-d;
+    background-color: @color-F0;
   }
 
 

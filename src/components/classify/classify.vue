@@ -145,7 +145,8 @@
             this.rightLists.forEach((val, index, arr) => {
               this.goodsList.push(arr[index].goodsImg);
             })
-          }).catch((err) => {
+          })
+          .catch((err) => {
           console.log(err);
         })
       },

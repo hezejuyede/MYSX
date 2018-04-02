@@ -75,7 +75,7 @@
       return {
         message: "",
         HideModal: true,
-        topImg: [{'img': 'http://www.ilqiqi.top/images/mYc/nbi/cj.png'}],
+        topImg: [{'img': 'http://www.ilqiqi.top/images/mYc/nbi/hgyh.png'}],
         swiperOption: {
           direction: "horizontal",
           pagination: ".swiper-pagination",
@@ -86,39 +86,60 @@
         productList:[],
         productList1: [
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'帝王蟹',
-            "price":'291',
-            "id":'PXL',
-            "sindex":1
-          },
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/1.jpg',
-            "title":'肉食鸡',
-            "price":'291',
-            "id":'JXL',
-            "sindex":1
-          },
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'整鸭',
-            "price":'291',
-            "id":'YXL',
-            "sindex":1
-          },
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/1.jpg',
-            "title":'白虾',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/7.jpg',
+            "title":'北极甜虾',
+            "price":'297',
             "id":'DXL',
             "sindex":1
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/1.jpg',
-            "title":'火锅丸',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/fishs/1.jpg',
+            "title":'三文鱼',
             "price":'291',
-            "id":'HGW',
+            "id":'DXL',
+            "sindex":0
+          },
+          {
+            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/10.jpg',
+            "title":'红虾',
+            "price":'290',
+            "id":'DXL',
             "sindex":1
+          },
+          {
+            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/8.jpg',
+            "title":'虾仁',
+            "price":'298',
+            "id":'DXL',
+            "sindex":1
+          },
+          {
+            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/7.jpg',
+            "title":'火锅丸',
+            "price":'296',
+            "id":'HGW',
+            "sindex":6
+          },
+          {
+            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/8.jpg',
+            "title":'火锅丸',
+            "price":'298',
+            "id":'HGW',
+            "sindex":7
+          },
+          {
+            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/9.jpg',
+            "title":'火锅丸',
+            "price":'299',
+            "id":'HGW',
+            "sindex":8
+          },
+          {
+            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/10.jpg',
+            "title":'火锅丸',
+            "price":'290',
+            "id":'HGW',
+            "sindex":9
           }
         ]
       }
@@ -133,14 +154,13 @@
     },
     methods: {
       _getProductList() {
-        axios.get("/api/MNavBarNewRec")
+        axios.get("/api/MNavBarTsCy")
           .then((res) => {
             this.productList = res.data
           })
           .catch((err) => {
             console.log(err)
           })
-
 
       },
       showProduct(index, id, sindex) {
@@ -170,7 +190,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: url("http://www.ilqiqi.top/images/mYc/nbi/qx.png");
+      background: url("http://www.ilqiqi.top/images/mYc/nbi/gl.png");
       background-size: 100%;
 
     }

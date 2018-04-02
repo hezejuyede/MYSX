@@ -8,10 +8,14 @@
           <swiper-slide v-for="(item,index) in topImg" :key="item.id">
             <img :src="item.img" style="width: 100%">
           </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
           <div class="swiper-scrollbar" slot="scrollbar"></div>
         </swiper>
       </div>
-      <div class="newRec-content-center"></div>
+      <div class="newRec-content-center">
+        <h3>本/期/精/选</h3>
+        <p>FRESH PREMIUM</p>
+      </div>
       <div class="newRec-content-bottom">
         <div class="newRec-template"v-for="(item,index) in productList">
           <div class="newRec-template-left" @click="showProduct(index,item.id,item.sindex)">
@@ -38,8 +42,6 @@
 
 
       </div>
-
-
     </div>
     <modal
       :msg="message"
@@ -75,12 +77,17 @@
       return {
         message: "",
         HideModal: true,
-        topImg: [{'img': 'http://www.ilqiqi.top/images/mYc/nbi/cj.png'}],
+        topImg: [
+          {'img': 'http://www.ilqiqi.top/images/mYc/nbi/yx3.jpg'},
+          {'img': 'http://www.ilqiqi.top/images/mYc/nbi/yx2.jpg'}
+          ],
         swiperOption: {
           direction: "horizontal",
+          loop: true,
           pagination: ".swiper-pagination",
           prevButton: ".swiper-button-prev",
           nextButton: ".swiper-button-next",
+          autoplay: 3000,
           autoplayDisableOnInteraction: false,
         },
         productList:[],
@@ -133,7 +140,7 @@
     },
     methods: {
       _getProductList() {
-        axios.get("/api/MNavBarNewRec")
+        axios.get("/api/MNavBarYcJX")
           .then((res) => {
             this.productList = res.data
           })
@@ -166,12 +173,18 @@
   @import "../../../common/less/base";
   .newRec-content {
     .newRec-content-center {
-      height: 50px;
+      height:100px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: url("http://www.ilqiqi.top/images/mYc/nbi/qx.png");
+      background: url("http://www.ilqiqi.top/images/mYc/nbi/yx1.jpg") no-repeat;
       background-size: 100%;
+      h3{
+        font-size: @font-size-large-xxx;
+        margin-bottom: 10px;
+        color: @color-green;
+      }
 
     }
     .newRec-template{

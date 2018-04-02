@@ -1,5 +1,5 @@
 <template>
-  <div id="newRec">
+  <div id="XsMs">
     <navheader></navheader>
     <search-navbar></search-navbar>
     <div class="newRec-content">
@@ -8,6 +8,7 @@
           <swiper-slide v-for="(item,index) in topImg" :key="item.id">
             <img :src="item.img" style="width: 100%">
           </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
           <div class="swiper-scrollbar" slot="scrollbar"></div>
         </swiper>
       </div>
@@ -23,7 +24,7 @@
               亿成优生鲜-{{item.title}}</div>
             <div class="newRec-template-price"
                  @click="showProduct(index,item.id,item.sindex)">
-              亿成新品价格：￥{{item.price}}
+              限时秒杀价格：￥{{item.price}}
             </div>
             <div class="newRec-template-cz"
                  @click="addCart(index,item.img, item.title, item.price, item.id)">
@@ -38,8 +39,6 @@
 
 
       </div>
-
-
     </div>
     <modal
       :msg="message"
@@ -70,55 +69,60 @@
       swiper,
       swiperSlide,
     },
-    name: 'newRec',
+    name: 'XsMs',
     data() {
       return {
         message: "",
         HideModal: true,
-        topImg: [{'img': 'http://www.ilqiqi.top/images/mYc/nbi/cj.png'}],
+        topImg: [
+          {'img': 'http://www.ilqiqi.top/images/mYc/nbi/ms1.jpg'},
+          {'img': 'http://www.ilqiqi.top/images/mYc/nbi/ms2.jpg'}
+        ],
         swiperOption: {
           direction: "horizontal",
+          loop: true,
           pagination: ".swiper-pagination",
           prevButton: ".swiper-button-prev",
           nextButton: ".swiper-button-next",
+          autoplay: 3000,
           autoplayDisableOnInteraction: false,
         },
         productList:[],
         productList1: [
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'帝王蟹',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/5.jpg',
+            "title":'雪蟹',
+            "price":'294',
             "id":'PXL',
-            "sindex":1
+            "sindex":4
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/1.jpg',
-            "title":'肉食鸡',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/5.jpg',
+            "title":'鸡胸肉',
+            "price":'294',
             "id":'JXL',
-            "sindex":1
+            "sindex":3
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'整鸭',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/ducks/5.jpg',
+            "title":'鸭舌',
+            "price":'294',
             "id":'YXL',
-            "sindex":1
+            "sindex":3
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/1.jpg',
-            "title":'白虾',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/5.jpg',
+            "title":'大龙虾',
+            "price":'295',
             "id":'DXL',
-            "sindex":1
+            "sindex":3
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/1.jpg',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/5.jpg',
             "title":'火锅丸',
-            "price":'291',
+            "price":'295',
             "id":'HGW',
-            "sindex":1
+            "sindex":4
           }
         ]
       }
@@ -133,7 +137,7 @@
     },
     methods: {
       _getProductList() {
-        axios.get("/api/MNavBarNewRec")
+        axios.get("/api/MNavBarXsMs")
           .then((res) => {
             this.productList = res.data
           })
@@ -170,7 +174,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: url("http://www.ilqiqi.top/images/mYc/nbi/qx.png");
+      background: url("http://www.ilqiqi.top/images/mYc/nbi/jrtj.png");
       background-size: 100%;
 
     }
@@ -233,4 +237,3 @@
   }
 
 </style>
-

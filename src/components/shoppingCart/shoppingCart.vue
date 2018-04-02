@@ -137,7 +137,8 @@
         oneGoodsPrice: 0,
         oneGoodsNumber: 0,
 
-        orderList:[]
+        orderList:[],
+        shoppingCartState:false
 
 
 
@@ -393,6 +394,7 @@
       oneChange(index, number, price) {
         this.oneSelect = true;
         this.allSelect = false;
+        this.shoppingCartState  = false;
 
         const icon = this.$refs.xuanze;
         const allIcon = this.$refs.allChange;
@@ -412,6 +414,8 @@
         }
         else if (icon[index].className === 'iconfont icon-xuanze1') {
           icon[index].className = 'iconfont icon-xuanze';
+          this.shoppingCartState  = true;
+
 
           this.oneGoodsNumber += number;
           this.oneGoodsPrice += price;
@@ -461,10 +465,12 @@
           this.allSelectState = true;
           this.oneGoodsNumber = this.allGoodsNumber;
           this.oneGoodsPrice = this.allGoodsPrice;
+          this.shoppingCartState  = true;
 
         }
         else if (allChange.className === 'iconfont icon-xuanze') {
           allChange.className = 'iconfont icon-xuanze1';
+          this.shoppingCartState  = false;
           for (let i = 0; i < icon.length; i++) {
             icon[i].className = 'iconfont icon-xuanze1'
           }
@@ -578,30 +584,45 @@
       },
 
       gotoJS() {
-        if (this.allSelectState === true) {
-          let shoppingCart = localStorage.getItem("ShoppingCart");
-          shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
-          let productList=shoppingCart.productlist;
-          let totalAmount =shoppingCart.totalAmount;
-          this.$router.push({
-            path: "/cartProduct/",
-            query: {
-              productList:productList,
-              totalAmount:totalAmount
-            }
-          })
+        if( this.shoppingCartState  === true ){
+          if (this.allSelectState === true) {
+            let shoppingCart = localStorage.getItem("ShoppingCart");
+            shoppingCart = JSON.parse(shoppingCart.substr(1, shoppingCart.length));
+            let productList=shoppingCart.productlist;
+            let totalAmount =shoppingCart.totalAmount;
+            this.$router.push({
+              path: "/cartProduct/",
+              query: {
+                productList:productList,
+                totalAmount:totalAmount
+              }
+            })
 
+          }
+          else {
+
+            this.$router.push({
+              path: "/cartProduct/",
+              query: {
+                productList: this.orderList,
+                totalAmount: this.oneGoodsPrice
+              }
+            })
+          }
         }
         else {
+          this.message = "请选择商品";
+          this.HideModal = false;
+          const that = this;
 
-          this.$router.push({
-            path: "/cartProduct/",
-            query: {
-              productList: this.orderList,
-              totalAmount: this.oneGoodsPrice
-            }
-          })
+          function a() {
+            that.message = "";
+            that.HideModal = true;
+          }
+
+          setTimeout(a, 2000);
         }
+
       }
 
     }

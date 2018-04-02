@@ -35,8 +35,8 @@
     <ul>
       <li>
         <router-link to="/FreeEat">
-          <i class="iconfont icon-mianfeishichi"></i>
-          <span>免费试吃</span>
+          <i class="iconfont icon-iconfonticon"></i>
+          <span>深夜食堂</span>
         </router-link>
       </li>
       <li>
@@ -46,15 +46,15 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/myOrder">
-          <i class="iconfont icon-order"></i>
-          <span>查看订单</span>
+        <router-link to="/LogisticsInfo">
+          <i class="iconfont icon-shangpin"></i>
+          <span>精选礼盒</span>
         </router-link>
       </li>
       <li>
-        <router-link to="/LogisticsInfo">
-          <i class="iconfont icon-wuliu"></i>
-          <span>物流信息</span>
+        <router-link to="/myOrder">
+          <i class="iconfont icon-order"></i>
+          <span>查看订单</span>
         </router-link>
       </li>
       <li>
@@ -155,7 +155,7 @@
           margin: 20px auto;
 
         }
-        .icon-mianfeishichi:before {
+        .icon-iconfonticon:before {
           display: block;
           width: 50px;
           height: 50px;
@@ -191,7 +191,7 @@
           margin: 20px auto;
 
         }
-        .icon-wuliu:before {
+        .icon-shangpin:before {
           display: block;
           width: 50px;
           height: 50px;

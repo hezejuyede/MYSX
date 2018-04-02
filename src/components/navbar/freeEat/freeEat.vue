@@ -75,7 +75,7 @@
       return {
         message: "",
         HideModal: true,
-        topImg: [{'img': 'http://www.ilqiqi.top/images/mYc/nbi/cj.png'}],
+        topImg: [{'img': 'http://www.ilqiqi.top/images/mYc/nbi/sy01.png'}],
         swiperOption: {
           direction: "horizontal",
           pagination: ".swiper-pagination",
@@ -86,39 +86,39 @@
         productList:[],
         productList1: [
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'帝王蟹',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/6.jpg',
+            "title":'珍宝蟹',
+            "price":'296',
             "id":'PXL',
-            "sindex":1
+            "sindex":5
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/1.jpg',
-            "title":'肉食鸡',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/6.jpg',
+            "title":'鸡胗',
+            "price":'296',
             "id":'JXL',
-            "sindex":1
+            "sindex":5
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'整鸭',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/6.jpg',
+            "title":'鸭肉快',
+            "price":'296',
             "id":'YXL',
-            "sindex":1
+            "sindex":5
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/1.jpg',
-            "title":'白虾',
-            "price":'291',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/6.jpg',
+            "title":'维基虾',
+            "price":'296',
             "id":'DXL',
-            "sindex":1
+            "sindex":5
           },
           {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/1.jpg',
+            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/6.jpg',
             "title":'火锅丸',
-            "price":'291',
+            "price":'296',
             "id":'HGW',
-            "sindex":1
+            "sindex":5
           }
         ]
       }
@@ -133,7 +133,7 @@
     },
     methods: {
       _getProductList() {
-        axios.get("/api/MNavBarNewRec")
+        axios.get("/api/MNavBarSySt")
           .then((res) => {
             this.productList = res.data
           })
@@ -166,11 +166,11 @@
   @import "../../../common/less/base";
   .newRec-content {
     .newRec-content-center {
-      height: 50px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: url("http://www.ilqiqi.top/images/mYc/nbi/qx.png");
+      background: url("http://www.ilqiqi.top/images/mYc/nbi/slsg.png") no-repeat;
       background-size: 100%;
 
     }
