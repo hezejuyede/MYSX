@@ -10,7 +10,7 @@
         <swiper :options="swiperOption2" ref="mySwiper">
           <swiper-slide v-for="(item,index) in YCJX" :key="item.id">
             <p class="center-ul-li-a-p">
-              <span>{{item.price}}￥</span>
+              <span>￥{{item.price}}</span>
               <span>多个</span>
             </p>
             <div @click="showjx4(index,item.id,item.sindex)">

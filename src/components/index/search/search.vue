@@ -17,15 +17,16 @@
           @click="intoSearch"/>
       </form>
     </div>
-    <div class="search-login">
-      <div v-if="login ==='1'" @click="outLogin">退出</div>
+    <div class="search-login" v-show="login ==='1'">
+      <div  @click="outLogin">退出</div>
     </div>
-    <div class="search-login">
-      <div v-if="login !=='1'" @click="UserLogin">登录</div>
+    <div class="search-login" v-show="login !=='1'">
+      <div  @click="UserLogin">登录</div>
     </div>
-    <div class="search-message">
+    <div class="search-message" >
+      <div class="search-message-wd" v-show="login ==='1'">12</div>
       <div>
-        <i class="iconfont icon-xiaoxi1"></i>
+        <i class="iconfont icon-xiaoxi1" @click="goToMessage"></i>
       </div>
     </div>
   </div>
@@ -67,6 +68,9 @@
       intoSearch() {
         this.$router.push({path: "/search"})
       },
+      goToMessage(){
+        this.$router.push({path:'/LxKf'})
+      }
 
     }
   }
@@ -118,21 +122,37 @@
       }
     }
     .search-login {
-      flex: 2;
+      flex: 3;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .search-message {
-      flex: 1;
+      flex: 2;
+      height: 40px;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      line-height: 37px;
+      justify-content: flex-start;
+      position: relative;
+      .search-message-wd{
+        position: absolute;
+        top: 1px;
+        right: 6px;
+        width: 17px;
+        height: 17px;
+        text-align: center;
+        line-height: 17px;
+        border-radius: 50%;
+        background-color: @color-red;
+        color: @color-white;
+      }
+      .icon-xiaoxi1{
+        color: @color-green;
+        margin-bottom: 5px;
+        font-size: @font-size-large;
+      }
 
     }
-    .icon-xiaoxi1{
-      color: @color-green;
-      margin-right: 2px;
-    }
+
   }
 </style>

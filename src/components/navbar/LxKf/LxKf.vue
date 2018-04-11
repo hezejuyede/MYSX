@@ -247,17 +247,17 @@
     },
     mounted() {
       this.$socket.on('privateMsg', (from, to, msg) => {
-        console.log(msg)
         if (msg.user === this.username) {
           this.content = msg.message;
           this.avatar = msg.avatar;
           let t = msg.time;
-          let time = t.slice(5)
+          let time = t.slice(5);
           let a = {
             'direction':"left",
             'leftContent': this.content,
             'leftAvatar': this.avatar,
-            'time':time
+            'time':time,
+            'state':"1"
           };
           this.onMessage.push(a)
         }
@@ -266,12 +266,13 @@
           this.CustomerServiceContent = msg.message;
           this.CustomerServiceAvatar = msg.avatar;
           let t = msg.time;
-          let time = t.slice(5)
+          let time = t.slice(5);
           let b = {
             'direction':"right",
             'time':time,
             'rightContent': this.CustomerServiceContent,
-            'rightAvatar': this.CustomerServiceAvatar
+            'rightAvatar': this.CustomerServiceAvatar,
+            'state':"1"
           };
           this.onMessage.push(b)
         }

@@ -29,9 +29,7 @@
     name: 'search',
     components: {},
     methods: {
-      changeRouter(){
-        alert("heihei")
-      }
+
     },
   }
 </script>
