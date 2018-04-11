@@ -1,236 +1,765 @@
 <template>
-  <div id="newRec">
-    <navheader></navheader>
-    <search-navbar></search-navbar>
-    <div class="newRec-content">
-      <div class="newRec-content-top">
-        <swiper :options="swiperOption" ref="mySwiper">
-          <swiper-slide v-for="(item,index) in topImg" :key="item.id">
-            <img :src="item.img" style="width: 100%">
-          </swiper-slide>
-          <div class="swiper-scrollbar" slot="scrollbar"></div>
-        </swiper>
+  <div class="LXKF">
+    <div class="noLogin" v-if="login !=='1'">
+      <img src="../../../common/image/logo.png" alt="">
+      <p>您好，登录账号才能和客服联系 </p>
+      <p @click="gotoLogin">点击前往登录页</p>
+    </div>
+    <div id="LxKf" v-if="login ==='1'">
+      <div class="LxKf-top">
+        <i class="iconfont icon-xiangzuo" @click="$router.go(-1)"></i>
+        <span>水汪汪客服</span>
+        <i class="iconfont icon-solid-person"></i>
       </div>
-      <div class="newRec-content-center"></div>
-      <div class="newRec-content-bottom">
-        <div class="newRec-template"v-for="(item,index) in productList">
-          <div class="newRec-template-left" @click="showProduct(index,item.id,item.sindex)">
-            <img :src="item.img" alt="">
-          </div>
-          <div class="newRec-template-right">
-            <div class="newRec-template-title"
-                 @click="showProduct(index,item.id,item.sindex)">
-              亿成优生鲜-{{item.title}}</div>
-            <div class="newRec-template-price"
-                 @click="showProduct(index,item.id,item.sindex)">
-              亿成新品价格：￥{{item.price}}
+      <div class="LxKf-center">
+        <div class="" v-for="(item,index) in  onMessage">
+          <div class="left-template"  v-show="item.direction === 'left'">
+            <div class="left-template-time">{{item.time}}</div>
+            <div class="left-template-content">
+              <p class="">
+                {{item.leftContent}}
+              </p>
             </div>
-            <div class="newRec-template-cz"
-                 @click="addCart(index,item.img, item.title, item.price, item.id)">
-              加入购物车
+            <div class="left-template-avatar">
+              <img :src="item.leftAvatar" alt="">
+            </div>
+
+          </div>
+          <div class="right-template" v-show="item.direction=== 'right'">
+            <div class="right-template-avatar">
+              <img :src="item.rightAvatar" alt="">
+            </div>
+            <div class="right-template-time"> {{item.time}}</div>
+            <div class="right-template-content" >
+              <p class="">
+                {{item.rightContent}}
+              </p>
             </div>
           </div>
-
-
-
-
         </div>
 
 
+
       </div>
+      <div class="LxKf-bottom" ref="LxKfBottom">
+        <div class="LxKf-bottom-left1"
+
+             @click="changeWztx">
+          <i class="iconfont icon-yuyin" v-show="wztx===true"></i>
+          <i class="iconfont icon-jianpan" v-show="yytx===true"></i>
+        </div>
+        <div class="LxKf-bottom-left2">
+          <input
+            id="bottomText"
+            v-show="wzsy===true"
+            contenteditable="true"
+            v-model="EmitMessage"
+            v-on:input="messageOnInput(EmitMessage)"/>
+          <p v-show="yysy===true">
+            按住&nbsp;说话
+          </p>
+        </div>
 
 
+        <div class="LxKf-bottom-right1">
+          <i class="iconfont icon-smiling"
+             @click="showFace"></i>
+        </div>
+        <div class="LxKf-bottom-right2">
+          <p class="" v-show="emitMes"
+             @click="emitMessage">发送</p>
+          <i class="iconfont icon-jiahao"
+             v-show="AddProject" @click="AddFJ"></i>
+        </div>
+      </div>
+      <div class="LxKf-FJ" v-show="LxKfFJ===true">
+        <div class="wxFace"
+             v-show="WxFace===true"
+             ref="SowWxFace">
+          <div class="" v-for="(item,index) in WXBQ">
+            <img :src="item.img" alt="" style="float: left" @click="selectBQ($event)">
+          </div>
+        </div>
+        <div class="WXFj"
+             v-show="WXFj===true">
+          <div class="">
+            <i class="iconfont icon-xiangce1"></i>
+            <span>相册</span>
+          </div>
+          <div class="">
+            <i class="iconfont icon-xiangji"></i>
+            <span>拍摄</span>
+          </div>
+          <div class="">
+            <i class="iconfont icon-shipin"></i>
+            <span>视频聊天</span>
+          </div>
+          <div class="">
+            <i class="iconfont icon-dizhi"></i>
+            <span>位置</span>
+          </div>
+          <div class="">
+            <i class="iconfont icon-icon-test"></i>
+            <span>红包</span>
+          </div>
+          <div class="">
+            <i class="iconfont icon-solid-person"></i>
+            <span>名片</span>
+          </div>
+          <div class="">
+            <i class="iconfont icon-ai01"></i>
+            <span>语音输入</span>
+          </div>
+          <div class="">
+            <i class="iconfont icon-favorite"></i>
+            <span>我的收藏</span>
+          </div>
+
+
+        </div>
+      </div>
+      <modal
+        :msg="message"
+        :isHideModal="HideModal">
+      </modal>
     </div>
-    <modal
-      :msg="message"
-      :isHideModal="HideModal">
-    </modal>
   </div>
+
 </template>
 
 <script type="text/ecmascript-6">
-  import Navheader from "../../../bese/navheader/navheader.vue";
-  import YcNavbar from "../../index/navbar/navbar.vue";
-  import SearchNavbar from "../../../bese/searchNavbar/seachNavbar.vue";
-  import {swiper, swiperSlide} from 'vue-awesome-swiper'
-  import {addCart} from '../../../api/config'
   import axios from 'axios'
   import Modal from "../../../bese/modal/modal.vue";
-
-
-  require('swiper/dist/css/swiper.css');
+  import {getNowTime} from '../../../api/config'
 
   export default {
     components: {
-
-      Modal,
-      SearchNavbar,
-      YcNavbar,
-      Navheader,
-      swiper,
-      swiperSlide,
+      Modal
     },
-    name: 'newRec',
+    name: 'LxKf',
     data() {
       return {
         message: "",
         HideModal: true,
-        topImg: [{'img': 'http://www.ilqiqi.top/images/mYc/nbi/cj.png'}],
-        swiperOption: {
-          direction: "horizontal",
-          pagination: ".swiper-pagination",
-          prevButton: ".swiper-button-prev",
-          nextButton: ".swiper-button-next",
-          autoplayDisableOnInteraction: false,
-        },
-        productList:[],
-        productList1: [
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'帝王蟹',
-            "price":'291',
-            "id":'PXL',
-            "sindex":1
-          },
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/chichens/1.jpg',
-            "title":'肉食鸡',
-            "price":'291',
-            "id":'JXL',
-            "sindex":1
-          },
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/crad/1.jpg',
-            "title":'整鸭',
-            "price":'291',
-            "id":'YXL',
-            "sindex":1
-          },
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/shrimps/1.jpg',
-            "title":'白虾',
-            "price":'291',
-            "id":'DXL',
-            "sindex":1
-          },
-          {
-            "img":'http://www.ilqiqi.top/images/mYc/goods/bolus/1.jpg',
-            "title":'火锅丸',
-            "price":'291',
-            "id":'HGW',
-            "sindex":1
-          }
+        EmitMessage: '',
+        onMessage: [],
+        avatar: '',
+        username: '',
+        login: '',
+
+
+
+        CustomerService:'',
+        CustomerServiceAvatar:'',
+        CustomerServiceContent:'',
+
+
+
+        content:'',
+        wztx:true,
+        yytx:false,
+        wzsy:true,
+        yysy:false,
+        emitMes:false,
+        AddProject:true,
+        LxKfFJ:false,
+        WxFace:false,
+        WXFj:false,
+        WXBQ: [
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/1.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/2.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/3.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/4.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/5.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/6.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/7.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/8.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/9.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/10.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/11.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/12.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/12.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/14.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/15.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/16.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/17.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/18.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/19.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/20.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/21.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/22.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/23.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/24.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/25.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/26.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/27.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/28.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/29.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/30.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/31.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/32.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/33.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/34.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/35.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/36.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/37.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/38.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/39.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/40.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/41.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/42.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/43.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/44.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/45.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/46.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/47.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/48.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/49.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/50.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/51.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/52.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/53.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/54.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/55.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/56.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/57.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/58.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/59.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/60.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/61.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/62.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/63.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/64.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/65.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/66.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/67.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/68.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/69.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/70.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/71.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/72.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/73.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/74.gif'},
+          {"img": 'http://www.ilqiqi.top/images/mYC/arclist/75.gif'}
         ]
+
       }
+    },
+    mounted() {
+      this.$socket.on('privateMsg', (from, to, msg) => {
+        console.log(msg)
+        if (msg.user === this.username) {
+          this.content = msg.message;
+          this.avatar = msg.avatar;
+          let t = msg.time;
+          let time = t.slice(5)
+          let a = {
+            'direction':"left",
+            'leftContent': this.content,
+            'leftAvatar': this.avatar,
+            'time':time
+          };
+          this.onMessage.push(a)
+        }
+        else if (msg.user === 'CustomerService') {
+          this.CustomerService = msg.user;
+          this.CustomerServiceContent = msg.message;
+          this.CustomerServiceAvatar = msg.avatar;
+          let t = msg.time;
+          let time = t.slice(5)
+          let b = {
+            'direction':"right",
+            'time':time,
+            'rightContent': this.CustomerServiceContent,
+            'rightAvatar': this.CustomerServiceAvatar
+          };
+          this.onMessage.push(b)
+        }
+        axios.post('/api/UserChatList',{
+          chatMessage:this.onMessage
+        })
+          .then((res)=>{
+          console.log("1")
+          })
+          .catch((err)=>{
+          console.log(err)
+          })
+
+
+
+
+
+      });
     },
     computed: {
-      swiper() {
-        return this.$refs.mySwiper.swiper
-      }
+
     },
-    created(){
-      this._getProductList()
+    created() {
+      this._getUserCollect();
+      this._getChatList();
+
     },
+
     methods: {
-      _getProductList() {
-        axios.get("/api/MNavBarNewRec")
+      _getUserCollect() {
+        if (sessionStorage.getItem("userInfo") === null) {
+          console.log("用户还没有登录")
+        }
+        else {
+          let UserInfo = sessionStorage.getItem("userInfo");
+          UserInfo = JSON.parse(UserInfo);
+          this.login = UserInfo.state;
+          this.avatar = UserInfo.avatar;
+          this.username = UserInfo.username;
+          this.$socket.emit('CustomerService', {
+            "username": this.username,
+          });
+
+        }
+      },
+      _getChatList(){
+        axios.post('/api/getUserChatList')
+
           .then((res) => {
-            this.productList = res.data
+            console.log(res.data)
+            this.onMessage = res.data
           })
           .catch((err) => {
             console.log(err)
           })
-
-
       },
-      showProduct(index, id, sindex) {
-        this.$router.push({path: "/GoodsDetails/", query: {id: id, index: sindex}})
-      },
-      addCart(index, img, title, price, id) {
-        addCart(index, img, title, price, id)
-        this.message = "已经加入购物车";
-        this.HideModal = false;
-        const that = this;
 
-        function a() {
-          that.message = "";
-          that.HideModal = true
+      emitMessage() {
+        let time = getNowTime()
+        this.$socket.emit("privateMessage", this.username, 'CustomerService', {
+          "message": this.EmitMessage,
+          "time": time,
+          "user": this.username,
+          'avatar': this.avatar
+        });
+        this.EmitMessage = ''
+      },
+
+      changeWztx() {
+        if (this.wztx === true){
+          this.wztx = false;
+          this.yytx = true;
+          this.wzsy = false;
+          this.yysy = true;
+        }
+        else if(this.wztx === false){
+          this.wztx = true;
+          this.yytx = false;
+          this.wzsy = true;
+          this.yysy = false;
         }
 
-        setTimeout(a, 2000);
+      },
+
+      messageOnInput(EmitMessage) {
+        let length = EmitMessage.length;
+        if (length > 0) {
+          this.emitMes = true;
+          this.AddProject = false;
+        }
+        else if (length === 0) {
+          this.emitMes = false;
+          this.AddProject = true;
+        }
+      },
+
+      showFace() {
+
+        this.$refs.LxKfBottom.style.bottom = '150px';
+        this.LxKfFJ = true;
+        this.WxFace = true;
+      },
+
+      AddFJ() {
+        this.$refs.LxKfBottom.style.bottom = '150px';
+        this.LxKfFJ = true;
+        this.WxFace = false;
+        this.WXFj = true;
+      },
+
+      selectBQ(e) {
+        let choice=e.target;
+        let cEle = choice.cloneNode(true);
+        let bottomText =document.querySelector("#bottomText")
+        bottomText.append(cEle);
+
+      },
+
+      gotoLogin() {
+        this.$router.push({path: "/Login"})
       },
     }
   }
 </script>
 <style scoped lang="less" rel="stylesheet/less">
   @import "../../../common/less/base";
-  .newRec-content {
-    .newRec-content-center {
-      height: 50px;
+  .LXKF {
+    width: 100%;
+    height: 100%;
+
+    .noLogin {
+      width: 100%;
+      height: 100%;
+      background-color: @color-F0;
       display: flex;
       align-items: center;
+      flex-direction: column;
+      font-size: @font-size-large-xxx;
       justify-content: center;
-      background: url("http://www.ilqiqi.top/images/mYc/nbi/qx.png");
-      background-size: 100%;
-
-    }
-    .newRec-template{
-      width: 95%;
-      margin: 5px auto 20px auto;
-      display: flex;
-      border-radius: 10%;
-      box-shadow: 1px 2px 3px 2px @color-background-d;
-      .newRec-template-left{
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        img{
-          width: 100%;
-          border-radius: 50%;
-        }
-
+      img {
+        margin-bottom: 50px;
       }
-      .newRec-template-right{
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-top: 30px;
-        margin-bottom: 30px;
-
-        .newRec-template-title{
-          flex: 2;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: @color-blue;
-          font-size: @font-size-large;
-
-        }
-        .newRec-template-price{
-          flex: 2;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: @color-red;
-        }
-        .newRec-template-cz {
-          flex: 1;
-          width: 60%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: @color-green;
-          color: @color-white;
-          border-radius: 15%;
-        }
+      p {
+        margin-bottom: 50px;
       }
     }
-
 
   }
+
+  #LxKf{
+    width: 100%;
+    .LxKf-top{
+      max-width: 640px;
+      width: 100%;
+      background-color: @color-wxt;
+      height: 50px;
+      line-height: 50px;
+      position: fixed;
+      top: 0;
+      z-index: 99;
+      .icon-xiangzuo{
+        margin-left: 15px;
+        color: @color-white;
+        font-size: @font-size-large;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      span{
+        color: @color-white;
+        font-size: @font-size-large;
+        font-weight: bold;
+      }
+      .icon-solid-person{
+        float: right;
+        margin-right: 20px;
+        font-size: @font-size-large-xx;
+        color: @color-white;
+        font-weight: bold;
+      }
+
+
+    }
+    .LxKf-center{
+      position: absolute;
+      width: 100%;
+      height: 85%;
+      overflow-y: scroll;
+      top: 60px;
+      bottom: 50px;
+      .left-template{
+        width: 80%;
+        float: right;
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin: 20px;
+        .left-template-avatar{
+          flex: 1;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          img{
+            width: 50px;
+            height: 50px;
+          }
+
+        }
+        .left-template-content{
+          flex: 4;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          p{
+            padding:10px;
+            border-radius: 10%;
+            background-color: @color-wxxx;
+          }
+
+
+        }
+        .left-template-time{
+          height: 16px;
+          line-height: 16px;
+          padding-left: 10px;
+          padding-right: 10px;
+          position: absolute;
+          top: -12px;
+          background-color: @color-F0;
+          color:@color-white;
+          left: 25%;
+          font-size: 12px;
+        }
+      }
+      .right-template{
+        width: 80%;
+        float: left;
+        display: flex;
+        align-items: center;
+        margin: 20px;
+        position: relative;
+        .right-template-avatar{
+          flex: 1;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          img{
+            width: 50px;
+            height: 50px;
+          }
+
+        }
+        .right-template-content{
+          flex: 4;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          p{
+            padding:10px;
+            border-radius: 10%;
+            background-color: @color-F0;
+          }
+
+
+        }
+        .right-template-time{
+          height: 16px;
+          line-height: 16px;
+          padding-left: 10px;
+          padding-right: 10px;
+          position: absolute;
+          top: -12px;
+          background-color: @color-F0;
+          color:@color-white;
+          left: 25%;
+          font-size: 12px;
+        }
+      }
+    }
+
+    .LxKf-bottom{
+      max-width: 640px;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      height: 50px;
+      z-index: 99;
+      background-color: @color-F0;
+      border-top: 1px solid@color-background-d;
+      display: flex;
+      align-items: center;
+      .LxKf-bottom-left1 {
+        flex: 1;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .icon-yuyin {
+          font-size: @font-size-large-xxxxx;
+        }
+        .icon-jianpan {
+          font-size: @font-size-large-xxxxx;
+        }
+      }
+      .LxKf-bottom-left2 {
+        flex: 6;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        input{
+          width: 200px;
+          margin: 0 auto;
+          height: 40px;
+          border-bottom: 1px solid @color-green;
+          font-size: @font-size-medium;
+          background-color: @color-F0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+        }
+        p:last-child {
+          width: 80%;
+          font-size: @font-size-large;
+          height: 40px;
+          border-radius: 5%;
+          border: 1px solid @color-background-d;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+      .LxKf-bottom-right1 {
+        flex: 1;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .icon-smiling {
+          font-size: @font-size-large-xxxxxxxx
+        }
+
+      }
+      .LxKf-bottom-right2 {
+        flex: 1.5;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p{
+          width: 90%;
+          height: 40px;
+          background-color: @color-green;
+          color: @color-white;
+          border-radius: 10%;
+          text-align: center;
+          line-height: 40px;
+          font-size: @font-size-medium-x;
+        }
+        .icon-jiahao{
+          font-size: @font-size-large-xxxxxxxx;
+        }
+
+      }
+    }
+    .LxKf-FJ{
+      max-width: 640px;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      height: 150px;
+      z-index: 99;
+      .wxFace{
+        width: 100%;
+        height: 100%;
+      }
+      .WXFj{
+        width: 100%;
+        height: 100%;
+        background-color: @color-F0;
+        div{
+          float: left;
+          width: 25%;
+          height: 50%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .icon-xiangce1{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxx;
+            margin-bottom: 5px;
+
+          }
+          .icon-xiangji{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxxx;
+            margin-bottom: 5px;
+
+          }
+          .icon-dizhi{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxxx;
+            margin-bottom: 5px;
+
+          }
+          .icon-icon-test{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxxx;
+            margin-bottom: 5px;
+          }
+          .icon-ai01{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxxx;
+            margin-bottom: 5px;
+          }
+          .icon-solid-person{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxxx;
+            margin-bottom: 5px;
+          }
+          .icon-favorite{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxxx;
+            margin-bottom: 5px;
+          }
+          .icon-shipin{
+            display: block;
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 15%;
+            background-color: @color-white;
+            font-size: @font-size-large-xxxx;
+            margin-bottom: 5px;
+          }
+        }
+      }
+
+
+
+    }
+
+  }
+
 
 </style>
 

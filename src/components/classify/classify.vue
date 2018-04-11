@@ -213,7 +213,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          .icon-px_pangxie, .icon-chicken, .icon-niu, .icon-ya, .icon-pig, .icon-kaoquanyang, .icon-xiazi, .icon-yu, .icon-huoguo1, .icon-_tiaoweipin, .icon-iconfonticon {
+          .icon-px_pangxie, .icon-chicken, .icon-niu, .icon-ya, .icon-pig, .icon-kaoquanyang, .icon-xiazi, .icon-yu, .icon-huoguo1, .icon-_tiaoweipin, .icon-Rice {
             color: @color-green;
             font-size: @font-size-large-x;
           }
@@ -329,6 +329,7 @@
 
   .loading-container {
     position: absolute;
+    max-width: 640px;
     width: 100%;
     top: 50%;
     transform: translateY(-50%);

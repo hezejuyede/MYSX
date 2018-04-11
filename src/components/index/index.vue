@@ -94,7 +94,7 @@
     created() {
       setTimeout(() => {
         this._getBanner();
-      }, 4000);
+      }, 1000);
     },
     methods: {
 

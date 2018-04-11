@@ -22,7 +22,7 @@
       </div>
 
     </div>
-    <div class="loading-container" v-show="!nearbyImg.length">
+    <div class="loading-container" v-show="!ImgList.length">
       <loading></loading>
     </div>
   </div>
@@ -50,13 +50,7 @@
           {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/banner2.jpg"},
           {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/banner3.jpg"}
         ],
-        ImgList:[
-          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list1.jpg"},
-          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list2.jpg"},
-          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list3.jpg"},
-          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list4.jpg"},
-          {"img": "http://www.ilqiqi.top/images/mYc/nbi/banner/list5.jpg"},
-        ],
+        ImgList:[],
         swiperOption: {
           direction: "horizontal",
           loop: true,
@@ -74,16 +68,17 @@
       }
     },
     created() {
-     /* setTimeout(() => {
+      setTimeout(() => {
         this._getBanner();
-      }, 4000);*/
+      }, 1000);
 
 
     },
     methods: {
       _getBanner() {
-        axios.get('/api/')
+        axios.get('/api/mobileNearby')
           .then((res) => {
+            this.ImgList = res.data
 
           })
           .catch((err) => {
@@ -113,6 +108,7 @@
     }
     .loading-container {
       position: absolute;
+      max-width: 640px;
       width: 100%;
       top: 50%;
       transform: translateY(-50%);

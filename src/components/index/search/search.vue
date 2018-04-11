@@ -25,7 +25,7 @@
     </div>
     <div class="search-message">
       <div>
-        <i class="iconfont icon-xiaoxi"></i>
+        <i class="iconfont icon-xiaoxi1"></i>
       </div>
     </div>
   </div>
@@ -129,6 +129,10 @@
       align-items: center;
       justify-content: center;
 
+    }
+    .icon-xiaoxi1{
+      color: @color-green;
+      margin-right: 2px;
     }
   }
 </style>

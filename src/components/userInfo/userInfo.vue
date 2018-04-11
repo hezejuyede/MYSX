@@ -168,7 +168,7 @@
         message: "",
         HideModal: true,
         navBar: [
-          {icon: "iconfont icon-wujiaoxing", text: "收藏"},
+          {icon: "iconfont icon-xingzhuang60kaobei2", text: "收藏"},
           {icon: "iconfont icon-yijingpinglun", text: "评论"},
           {icon: "iconfont icon-qianbao", text: "钱包"}
         ],
@@ -202,7 +202,7 @@
       this._getUserCollect();
       setTimeout(()=>{
         this. _getUserInfo()
-      },2000);
+      },1000);
     },
     methods: {
       _getUserCollect() {
@@ -412,8 +412,8 @@
             justify-content: center;
             font-size: @font-size-large;
             border-bottom: 1px solid @color-F0;
-            .icon-wujiaoxing {
-              font-size: @font-size-large-xx;
+            .icon-xingzhuang60kaobei2 {
+              font-size: @font-size-large-x;
               color: @color-red;
             }
             .icon-yijingpinglun {

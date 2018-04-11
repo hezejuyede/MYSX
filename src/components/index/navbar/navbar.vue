@@ -53,7 +53,7 @@
       </li>
       <li>
         <router-link to="/myOrder">
-          <i class="iconfont icon-order"></i>
+          <i class="iconfont icon-dingdan1"></i>
           <span>查看订单</span>
         </router-link>
       </li>
@@ -179,7 +179,7 @@
           margin: 20px auto;
 
         }
-        .icon-order:before {
+        .icon-dingdan1:before {
           display: block;
           width: 50px;
           height: 50px;

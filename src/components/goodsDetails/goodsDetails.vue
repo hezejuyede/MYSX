@@ -122,7 +122,7 @@
 
     <div class="goodsDetails-bottom">
       <div class="bottom-kf">
-        <i class="iconfont icon-kefu">客服</i>
+        <i class="iconfont icon-kefu" @click="LXKF">客服</i>
         <i class="iconfont icon-heart" @click="collection" ref="Collection">收藏</i>
       </div>
       <div class="bottom-addCart" @click="addCart">
@@ -418,6 +418,9 @@
           this.number--
         }
 
+      },
+      LXKF(){
+        this.$router.push({path: "/LxKf"})
       }
 
 
