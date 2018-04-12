@@ -5,13 +5,13 @@
       <p>您好，登录账号才能和客服联系 </p>
       <p @click="gotoLogin">点击前往登录页</p>
     </div>
-    <div id="LxKf" v-if="login ==='1'">
+    <div id="LxKf" v-if="login ==='1'" >
       <div class="LxKf-top">
         <i class="iconfont icon-xiangzuo" @click="$router.go(-1)"></i>
         <span>水汪汪客服</span>
         <i class="iconfont icon-solid-person"></i>
       </div>
-      <div class="LxKf-center">
+      <div class="LxKf-center" @click="HideBottom">
         <div class="" v-for="(item,index) in  onMessage">
           <div class="left-template"  v-show="item.direction === 'left'">
             <div class="left-template-time">{{item.time}}</div>
@@ -286,10 +286,6 @@
           console.log(err)
           })
 
-
-
-
-
       });
     },
     computed: {
@@ -394,6 +390,11 @@
       gotoLogin() {
         this.$router.push({path: "/Login"})
       },
+      HideBottom(){
+        this.$refs.LxKfBottom.style.bottom = '0px';
+        this.LxKfFJ = false;
+        this.WxFace = false;
+      }
     }
   }
 </script>
@@ -546,7 +547,7 @@
           top: -12px;
           background-color: @color-F0;
           color:@color-white;
-          left: 25%;
+          left: 35%;
           font-size: 12px;
         }
       }

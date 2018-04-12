@@ -210,6 +210,11 @@
 
                 this.message = "登录成功";
                 this.HideModal = false;
+                this.$socket.emit('CustomerService', {
+                  "username": this.username,
+                });
+
+
                 const that = this;
 
                 function a() {

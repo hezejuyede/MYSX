@@ -24,7 +24,7 @@
       <div  @click="UserLogin">登录</div>
     </div>
     <div class="search-message" >
-      <div class="search-message-wd" v-show="login ==='1'">12</div>
+      <div class="search-message-wd" v-show="login ==='1' && this.number>0">{{number}}</div>
       <div>
         <i class="iconfont icon-xiaoxi1" @click="goToMessage"></i>
       </div>
@@ -33,16 +33,19 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import  axios from 'axios'
   export default {
     name: 'index',
     data() {
       return {
         userName: "",
         login: "",
+        number:'',
       }
     },
     created() {
-      this._getUserInfo()
+      this._getUserInfo();
+      this._getChatList();
     },
     methods: {
       _getUserInfo() {
@@ -70,8 +73,18 @@
       },
       goToMessage(){
         this.$router.push({path:'/LxKf'})
-      }
+      },
+      _getChatList(){
+        axios.post('/api/getUserWDChatList')
 
+          .then((res) => {
+            console.log(res.data)
+            this.number = res.data
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      },
     }
   }
 </script>
